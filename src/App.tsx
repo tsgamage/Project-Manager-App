@@ -1,12 +1,25 @@
-import { Button } from "./components/ui/button";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import RootLayout from "./pages/RootLayout";
+import OverviewPage from "./pages/Overview";
+import ProjectPage from "./pages/Projects";
+import TasksPage from "./pages/Tasks";
+import SettingsPage from "./pages/Settings";
 
 function App() {
-  return (
-    <div>
-      <h1 className="text-center text-emerald-500 text-4xl">Hello Princess</h1>
-      <Button>Click Me!</Button>
-    </div>
-  );
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <RootLayout />,
+      children: [
+        { index: true, element: <OverviewPage /> },
+        { path: "/projects", element: <ProjectPage /> },
+        { path: "/tasks", element: <TasksPage /> },
+        { path: "/settings", element: <SettingsPage /> },
+      ],
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;
