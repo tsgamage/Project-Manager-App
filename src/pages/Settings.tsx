@@ -1,34 +1,27 @@
 import PageWrapper from "@/components/Page-Wrapper";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/shadcn/breadcrumb";
+import AppearanceSettings from "@/components/pages/Settings/AppearanceSettings";
+import DataSettings from "@/components/pages/Settings/DataSettings";
+import ProfileSettings from "@/components/pages/Settings/ProfileSettings";
 
-const BreadCrumbComponent = () => {
-  return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem className="hidden md:block">
-          <BreadcrumbLink href="#">Project Manager</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator className="hidden md:block" />
-        <BreadcrumbItem>
-          <BreadcrumbPage>Settings</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
-  );
-};
 export default function SettingsPage() {
   return (
-    <PageWrapper breadCrumbComponent={BreadCrumbComponent}>
-      <div className="flex flex-col gap-4">
-        <h1 className="text-2xl font-bold">Settings</h1>
-        <p>Welcome to the Settings page!</p>
+    <PageWrapper>
+      <div className="space-y-6 px-5 py-6 lg:px-8">
+        <header>
+          <h1 className="font-heading text-3xl font-semibold tracking-tight">
+            Settings
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Manage your profile, appearance, and workspace data.
+          </p>
+        </header>
+        <div className="grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
+          <div className="space-y-5">
+            <ProfileSettings />
+            <DataSettings />
+          </div>
+          <AppearanceSettings />
+        </div>
       </div>
     </PageWrapper>
   );
