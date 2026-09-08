@@ -3,5 +3,5 @@ export default function PageWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return <div>{children}</div>;
 }
