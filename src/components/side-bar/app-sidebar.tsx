@@ -53,10 +53,10 @@ const data = {
     },
     {
       title: "Projects",
-      url: "/projects",
+      url: "/project/all",
       icon: <BoxIcon />,
       items: [
-        { title: "Leaning Management System for Malith Wasalage", url: "#" },
+        { title: "Leaning Management System for Malith Wasalage", url: "/project/p1" },
         { title: "Explorer", url: "#" },
         { title: "Quantum", url: "#" },
       ],
