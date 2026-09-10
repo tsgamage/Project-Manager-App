@@ -6,7 +6,13 @@ import { Outlet } from "react-router-dom";
 
 export default function RootLayout() {
   return (
-    <>
+    <div
+      onContextMenu={(e) => e.preventDefault()}
+      className="select-none"
+      draggable={false}
+      onDrag={(e) => e.preventDefault()}
+      onDragStartCapture={e=>e.preventDefault()}
+    >
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <TooltipProvider>
           <SidebarProvider>
@@ -17,6 +23,6 @@ export default function RootLayout() {
           </SidebarProvider>
         </TooltipProvider>
       </ThemeProvider>
-    </>
+    </div>
   );
 }

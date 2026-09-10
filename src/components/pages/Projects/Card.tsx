@@ -1,67 +1,259 @@
 import { Badge } from "@/components/ui/shadcn/badge";
-
+import { Checkbox } from "@/components/ui/shadcn/checkbox";
 import {
   Card,
+  CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/shadcn/card";
-import { Progress, ProgressValue } from "@/components/ui/shadcn/progress";
 
-export interface Project {
-  name: string;
-  description: string;
-  status: "Active" | "On Hold" | "Completed";
-  progress: number;
-  updated: string;
-  members: string[];
-}
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuGroup,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuTrigger,
+} from "@/components/ui/shadcn/context-menu";
+import {
+  Progress,
+  ProgressLabel,
+  ProgressValue,
+} from "@/components/ui/shadcn/progress";
+import { Separator } from "@/components/ui/shadcn/separator";
+import type { IProject } from "@/types/project.types";
+import { ArchiveIcon, EditIcon, InfoIcon, SquareCheckIcon } from "lucide-react";
+import { cn } from "cn";
+import { useNavigate } from "react-router-dom";
 
 interface ProjectCardProps {
-  project: Project;
-  list?: boolean;
+  project: IProject;
+  view?: "card" | "list";
+  isSelected: boolean;
+  selectedItemCount: number;
+  onSelect: (projectId: string) => void;
+  onArchive: (projectId: string) => void;
+  onStatusChange: (projectId: string, status: IProject["status"]) => void;
 }
 
-const statusStyles = {
-  Active: "border-emerald-500/20 bg-emerald-500/15 text-emerald-500",
-  "On Hold": "border-amber-500/20 bg-amber-500/15 text-amber-500",
-  Completed: "border-blue-500/20 bg-blue-500/15 text-blue-400",
-};
+function getBadgeClasses(status: IProject["status"]) {
+  switch (status) {
+    case "Completed":
+      return "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300";
+    case "Active":
+      return "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300";
+    case "On Hold":
+      return "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300";
+    case "Archived":
+      return "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300";
+  }
+}
+
+function getProgressClasses(progress: number) {
+  if (progress >= 75) {
+    return "[&_[data-slot=progress-indicator]]:bg-emerald-500";
+  }
+
+  if (progress >= 40) {
+    return "[&_[data-slot=progress-indicator]]:bg-amber-500";
+  }
+
+  return "[&_[data-slot=progress-indicator]]:bg-rose-500";
+}
 
 export default function ProjectCard({
   project,
-  list = false,
+  view = "card",
+  isSelected,
+  selectedItemCount,
+  onSelect,
+  onArchive,
+  onStatusChange,
 }: ProjectCardProps) {
-  return (
-    <Card className={list ? "gap-0" : "min-h-48"}>
-      <CardHeader className={list ? "gap-4 sm:grid-cols-[1fr_auto]" : "gap-3"}>
-        <div className="flex items-start justify-between gap-3">
-          <CardTitle className="truncate">{project.name}</CardTitle>
-          <Badge className={statusStyles[project.status]} variant="outline">
-            {project.status}
-          </Badge>
+  const navigate = useNavigate();
+
+  const completedTasksCount =
+    project.taskCategories?.reduce(
+      (acc, category) =>
+        acc + (category.tasks?.filter((task) => task.completed).length ?? 0),
+      0,
+    ) || 0;
+
+  const allTasksCount =
+    project.taskCategories?.reduce(
+      (acc, cat) => acc + (cat.tasks?.length ?? 0),
+      0,
+    ) || 0;
+
+  const progress = allTasksCount
+    ? Math.floor((completedTasksCount / allTasksCount) * 100)
+    : 0;
+
+  const statusOptions = ["Active", "On Hold", "Completed"] as const;
+
+  const projectContextMenu = (
+    <>
+      <ContextMenuGroup>
+        <ContextMenuItem onClick={() => onSelect(project.id)}>
+          <SquareCheckIcon />
+          {isSelected ? "Deselect" : "Select"}
+        </ContextMenuItem>
+        <ContextMenuItem>
+          <EditIcon />
+          Edit Info
+        </ContextMenuItem>
+        <ContextMenuItem>
+          <InfoIcon />
+          Properties
+        </ContextMenuItem>
+        <ContextMenuSub>
+          <ContextMenuSubTrigger>Change status</ContextMenuSubTrigger>
+          <ContextMenuSubContent>
+            {statusOptions.map((status) => (
+              <ContextMenuItem
+                key={status}
+                onClick={() => onStatusChange(project.id, status)}
+              >
+                {status}
+              </ContextMenuItem>
+            ))}
+          </ContextMenuSubContent>
+        </ContextMenuSub>
+      </ContextMenuGroup>
+      <ContextMenuSeparator />
+      <ContextMenuGroup>
+        <ContextMenuItem
+          variant="destructive"
+          onClick={() => onArchive(project.id)}
+        >
+          <ArchiveIcon />
+          Archive
+        </ContextMenuItem>
+      </ContextMenuGroup>
+    </>
+  );
+
+  function handleProjectCardClick() {
+    if (selectedItemCount > 0) {
+      onSelect(project.id);
+    } else {
+      navigate(`/project/${project.id}`);
+    }
+  }
+
+  const projectCard = (
+    <Card
+      onClick={handleProjectCardClick}
+      className={cn(
+        "relative cursor-pointer hover:ring-1 hover:ring-accent-foreground/20",
+        view === "card" && "flex flex-col justify-between",
+        view === "list" && "gap-0",
+        isSelected && "ring-2 ring-primary hover:ring-2 hover:ring-primary",
+      )}
+    >
+      {selectedItemCount > 0 && (
+        <div className="absolute left-3 top-4 z-10">
+          <Checkbox
+            checked={isSelected}
+            aria-label={`${isSelected ? "Deselect" : "Select"} ${project.name}`}
+          />
         </div>
-        <CardDescription className={list ? "max-w-2xl" : "min-h-10"}>
-          {project.description}
-        </CardDescription>
-      </CardHeader>
-      <div
-        className={
-          list
-            ? "grid gap-4 px-4 pb-4 sm:grid-cols-[minmax(180px,1fr)_auto] sm:items-center"
-            : "mt-auto px-4 pb-4"
-        }
-      >
-        <Progress value={project.progress} className="gap-2">
-          <div className="flex items-center text-xs text-muted-foreground">
-            <span>Progress</span>
-            <ProgressValue className="text-xs" />
+      )}
+      {view === "card" ? (
+        <>
+          <CardHeader
+            className={cn(
+              "flex justify-between items-center",
+              selectedItemCount > 0 && "pl-10",
+            )}
+          >
+            <CardTitle className="truncate" title={project.name}>
+              {project.name}
+            </CardTitle>
+
+            <div className="flex items-center justify-between gap-3">
+              <Badge
+                className={getBadgeClasses(project.status)}
+                variant="outline"
+              >
+                {project.status}
+              </Badge>
+            </div>
+          </CardHeader>
+          <Separator />
+          <div
+            className="flex h-full w-full flex-col gap-3 justify-between"
+            draggable={false}
+          >
+            <CardContent className="line-clamp-5">
+              {project.description}
+            </CardContent>
+            <CardFooter className="w-full flex-col justify-between">
+              <Progress
+                value={progress}
+                className={cn("w-full", getProgressClasses(progress))}
+              >
+                <ProgressLabel className="text-xs text-muted-foreground">
+                  Progress
+                </ProgressLabel>
+                <ProgressValue className="text-xs" />
+              </Progress>
+              <p className="flex w-full justify-end text-xs text-muted-foreground">
+                Updated {project.updatedAt}
+              </p>
+            </CardFooter>
           </div>
-        </Progress>
-        <div className="flex items-center justify-between gap-4 text-xs text-muted-foreground sm:justify-end">
-          <span>Updated {project.updated}</span>
-        </div>
-      </div>
+        </>
+      ) : (
+        <>
+          <CardHeader className="gap-3 pl-11 grid-cols-[minmax(0,1fr)_auto] items-start">
+            <div className="min-w-0">
+              <CardTitle className="truncate" title={project.name}>
+                {project.name}
+              </CardTitle>
+              <CardDescription className="mt-2 line-clamp-2 max-w-3xl">
+                {project.description}
+              </CardDescription>
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge
+                className={getBadgeClasses(project.status)}
+                variant="outline"
+              >
+                {project.status}
+              </Badge>
+            </div>
+          </CardHeader>
+          <div className="grid gap-4 px-4 pb-4 pl-11 grid-cols-[minmax(180px,1fr)_auto] items-center">
+            <div className="block">
+              <Progress
+                value={progress}
+                className={getProgressClasses(progress)}
+              >
+                <ProgressLabel className="text-xs text-muted-foreground">
+                  Progress
+                </ProgressLabel>
+                <ProgressValue className="text-xs" />
+              </Progress>
+            </div>
+            <div className="flex items-center gap-4 text-xs text-muted-foreground justify-end">
+              <span>Updated {project.updatedAt}</span>
+            </div>
+          </div>
+        </>
+      )}
     </Card>
+  );
+
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger render={projectCard} />
+      <ContextMenuContent>{projectContextMenu}</ContextMenuContent>
+    </ContextMenu>
   );
 }

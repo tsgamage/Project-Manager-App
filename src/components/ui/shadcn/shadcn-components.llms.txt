@@ -1,0 +1,3049 @@
+# Shadcn UI Component Library - LLM Documentation
+
+## Overview
+Shadcn UI is a collection of reusable components built on top of Radix UI and Tailwind CSS. This documentation provides detailed information about each component's purpose, anatomy, properties, events, and usage examples.
+
+---
+
+## Accordion
+
+### When to Use / Purpose
+- Display collapsible content sections
+- Organize information into expandable/collapsible groups
+- Create FAQ sections or navigation menus
+- Show/hide detailed information without cluttering the interface
+
+### Anatomy
+```tsx
+<Accordion>
+  <AccordionItem>
+    <AccordionTrigger>Trigger Text</AccordionTrigger>
+    <AccordionContent>Content</AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+### Properties
+- `type`: "single" | "multiple" - Controls whether one or multiple items can be open
+- `collapsible`: boolean - Allows all items to be closed when type is "single"
+- `value`: string | string[] - Controlled value for open items
+- `onValueChange`: function - Callback when value changes
+- `disabled`: boolean - Disables the accordion
+
+### Events
+- `onValueChange`: Fired when accordion items are opened/closed
+- `onClick`: Fired when trigger is clicked
+
+### Example Usages
+```tsx
+// Single accordion
+<Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>What is Shadcn UI?</AccordionTrigger>
+    <AccordionContent>
+      Shadcn UI is a collection of reusable components built on Radix UI.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+
+// Multiple accordion
+<Accordion type="multiple">
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Installation</AccordionTrigger>
+    <AccordionContent>Installation instructions...</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="item-2">
+    <AccordionTrigger>Usage</AccordionTrigger>
+    <AccordionContent>Usage examples...</AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+---
+
+## Alert
+
+### When to Use / Purpose
+- Display important messages to users
+- Show success, error, warning, or informational notifications
+- Provide contextual feedback for user actions
+- Alert users about system status or changes
+
+### Anatomy
+```tsx
+<Alert>
+  <AlertIcon />
+  <AlertTitle>Title</AlertTitle>
+  <AlertDescription>Description</AlertDescription>
+</Alert>
+```
+
+### Properties
+- `variant`: "default" | "destructive" - Visual style variant
+- `className`: string - Additional CSS classes
+
+### Events
+- No specific events (display-only component)
+
+### Example Usages
+```tsx
+// Success alert
+<Alert>
+  <CheckCircle className="h-4 w-4" />
+  <AlertTitle>Success!</AlertTitle>
+  <AlertDescription>
+    Your changes have been saved successfully.
+  </AlertDescription>
+</Alert>
+
+// Error alert
+<Alert variant="destructive">
+  <AlertCircle className="h-4 w-4" />
+  <AlertTitle>Error</AlertTitle>
+  <AlertDescription>
+    There was a problem saving your changes.
+  </AlertDescription>
+</Alert>
+```
+
+---
+
+## Alert Dialog
+
+### When to Use / Purpose
+- Confirm destructive actions before execution
+- Ask for user confirmation for important operations
+- Prevent accidental deletions or changes
+- Provide clear warning messages with action choices
+
+### Anatomy
+```tsx
+<AlertDialog>
+  <AlertDialogTrigger>Trigger</AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Title</AlertDialogTitle>
+      <AlertDialogDescription>Description</AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Action</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+### Properties
+- `open`: boolean - Controls dialog visibility
+- `onOpenChange`: function - Callback when open state changes
+- `defaultOpen`: boolean - Initial open state
+
+### Events
+- `onOpenChange`: Fired when dialog opens/closes
+- `onClick`: Fired when trigger is clicked
+
+### Example Usages
+```tsx
+// Delete confirmation
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button variant="destructive">Delete Account</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This action cannot be undone. This will permanently delete your account.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+---
+
+## Aspect Ratio
+
+### When to Use / Purpose
+- Maintain consistent aspect ratios for images and videos
+- Prevent layout shifts when content loads
+- Create responsive media containers
+- Ensure consistent visual proportions across different screen sizes
+
+### Anatomy
+```tsx
+<AspectRatio ratio={16 / 9}>
+  <img src="image.jpg" alt="Description" />
+</AspectRatio>
+```
+
+### Properties
+- `ratio`: number - Aspect ratio (width/height)
+- `className`: string - Additional CSS classes
+
+### Events
+- No specific events (container component)
+
+### Example Usages
+```tsx
+// 16:9 video container
+<AspectRatio ratio={16 / 9}>
+  <iframe
+    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+    title="YouTube video"
+  />
+</AspectRatio>
+
+// Square image container
+<AspectRatio ratio={1}>
+  <img src="/profile.jpg" alt="Profile picture" />
+</AspectRatio>
+
+// Custom ratio
+<AspectRatio ratio={4 / 3}>
+  <img src="/banner.jpg" alt="Banner" />
+</AspectRatio>
+```
+
+---
+
+## Avatar
+
+### When to Use / Purpose
+- Display user profile pictures
+- Show user initials when no image is available
+- Represent users in lists, comments, or user interfaces
+- Provide visual identity for user accounts
+
+### Anatomy
+```tsx
+<Avatar>
+  <AvatarImage src="image.jpg" alt="User" />
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+```
+
+### Properties
+- `className`: string - Additional CSS classes
+
+### Events
+- `onClick`: Fired when avatar is clicked
+- `onLoad`: Fired when image loads
+- `onError`: Fired when image fails to load
+
+### Example Usages
+```tsx
+// With image
+<Avatar>
+  <AvatarImage src="/user.jpg" alt="John Doe" />
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+
+// Fallback only
+<Avatar>
+  <AvatarFallback>AB</AvatarFallback>
+</Avatar>
+
+// Group of avatars
+<div className="flex -space-x-2">
+  <Avatar>
+    <AvatarImage src="/user1.jpg" />
+    <AvatarFallback>U1</AvatarFallback>
+  </Avatar>
+  <Avatar>
+    <AvatarImage src="/user2.jpg" />
+    <AvatarFallback>U2</AvatarFallback>
+  </Avatar>
+</div>
+```
+
+---
+
+## Badge
+
+### When to Use / Purpose
+- Display status indicators
+- Show counts or numbers
+- Highlight important information
+- Categorize or tag content
+- Show user roles or permissions
+
+### Anatomy
+```tsx
+<Badge variant="default">Badge Text</Badge>
+```
+
+### Properties
+- `variant`: "default" | "secondary" | "destructive" | "outline" - Visual style
+- `className`: string - Additional CSS classes
+
+### Events
+- `onClick`: Fired when badge is clicked
+
+### Example Usages
+```tsx
+// Status badge
+<Badge variant="default">Active</Badge>
+<Badge variant="secondary">Draft</Badge>
+<Badge variant="destructive">Error</Badge>
+
+// Count badge
+<Badge variant="outline">42</Badge>
+
+// With icon
+<Badge>
+  <CheckCircle className="mr-1 h-3 w-3" />
+  Verified
+</Badge>
+
+// Removable badge
+<Badge variant="secondary">
+  Tag
+  <X className="ml-1 h-3 w-3 cursor-pointer" onClick={handleRemove} />
+</Badge>
+```
+
+---
+
+## Button
+
+### When to Use / Purpose
+- Trigger actions or submit forms
+- Navigate to other pages or sections
+- Provide primary and secondary actions
+- Create interactive elements in forms and dialogs
+
+### Anatomy
+```tsx
+<Button variant="default" size="default">
+  Button Text
+</Button>
+```
+
+### Properties
+- `variant`: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" - Visual style
+- `size`: "default" | "sm" | "lg" | "icon" - Size variant
+- `disabled`: boolean - Disables the button
+- `asChild`: boolean - Renders as child component
+- `type`: "button" | "submit" | "reset" - HTML button type
+
+### Events
+- `onClick`: Fired when button is clicked
+- `onMouseEnter`: Fired when mouse enters
+- `onMouseLeave`: Fired when mouse leaves
+
+### Example Usages
+```tsx
+// Primary button
+<Button>Save Changes</Button>
+
+// Secondary button
+<Button variant="secondary">Cancel</Button>
+
+// Destructive button
+<Button variant="destructive">Delete</Button>
+
+// Icon button
+<Button size="icon">
+  <Plus className="h-4 w-4" />
+</Button>
+
+// Link button
+<Button variant="link" asChild>
+  <Link href="/settings">Settings</Link>
+</Button>
+
+// Loading state
+<Button disabled>
+  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+  Loading...
+</Button>
+```
+
+---
+
+## Calendar
+
+### When to Use / Purpose
+- Display dates in a calendar format
+- Allow date selection for forms
+- Show event schedules or availability
+- Provide date navigation and viewing
+
+### Anatomy
+```tsx
+<Calendar
+  mode="single"
+  selected={date}
+  onSelect={setDate}
+  className="rounded-md border"
+/>
+```
+
+### Properties
+- `mode`: "single" | "multiple" | "range" - Selection mode
+- `selected`: Date | Date[] | DateRange - Selected date(s)
+- `onSelect`: function - Callback when date is selected
+- `disabled`: Date[] - Disabled dates
+- `fromDate`: Date - Minimum selectable date
+- `toDate`: Date - Maximum selectable date
+- `defaultMonth`: Date - Initial month to display
+
+### Events
+- `onSelect`: Fired when date is selected
+- `onMonthChange`: Fired when month changes
+
+### Example Usages
+```tsx
+// Single date selection
+const [date, setDate] = useState<Date>()
+
+<Calendar
+  mode="single"
+  selected={date}
+  onSelect={setDate}
+  className="rounded-md border"
+/>
+
+// Date range selection
+const [dateRange, setDateRange] = useState<DateRange>()
+
+<Calendar
+  mode="range"
+  selected={dateRange}
+  onSelect={setDateRange}
+  numberOfMonths={2}
+/>
+
+// With disabled dates
+<Calendar
+  mode="single"
+  selected={date}
+  onSelect={setDate}
+  disabled={(date) => date < new Date()}
+/>
+```
+
+---
+
+## Card
+
+### When to Use / Purpose
+- Group related content together
+- Create content containers with consistent styling
+- Display information in organized sections
+- Provide visual separation between content areas
+
+### Anatomy
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+    <CardDescription>Description</CardDescription>
+  </CardHeader>
+  <CardContent>Content</CardContent>
+  <CardFooter>Footer</CardFooter>
+</Card>
+```
+
+### Properties
+- `className`: string - Additional CSS classes
+
+### Events
+- `onClick`: Fired when card is clicked
+
+### Example Usages
+```tsx
+// Basic card
+<Card>
+  <CardHeader>
+    <CardTitle>Card Title</CardTitle>
+    <CardDescription>Card description</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <p>Card content goes here.</p>
+  </CardContent>
+  <CardFooter>
+    <Button>Action</Button>
+  </CardFooter>
+</Card>
+
+// Interactive card
+<Card className="cursor-pointer hover:shadow-lg" onClick={handleClick}>
+  <CardContent className="p-6">
+    <h3 className="text-lg font-semibold">Interactive Card</h3>
+    <p className="text-muted-foreground">Click me!</p>
+  </CardContent>
+</Card>
+
+// Image card
+<Card>
+  <CardHeader>
+    <CardTitle>Product Name</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <img src="/product.jpg" alt="Product" className="w-full rounded" />
+  </CardContent>
+  <CardFooter>
+    <Button>Add to Cart</Button>
+  </CardFooter>
+</Card>
+```
+
+---
+
+## Checkbox
+
+### When to Use / Purpose
+- Allow users to select multiple options
+- Create to-do lists or task management
+- Provide binary choices in forms
+- Enable/disable features or settings
+
+### Anatomy
+```tsx
+<div className="flex items-center space-x-2">
+  <Checkbox id="terms" />
+  <label htmlFor="terms">Accept terms</label>
+</div>
+```
+
+### Properties
+- `checked`: boolean - Checked state
+- `onCheckedChange`: function - Callback when state changes
+- `disabled`: boolean - Disables the checkbox
+- `required`: boolean - Makes checkbox required
+- `id`: string - Unique identifier
+
+### Events
+- `onCheckedChange`: Fired when checkbox state changes
+- `onClick`: Fired when checkbox is clicked
+
+### Example Usages
+```tsx
+// Basic checkbox
+<div className="flex items-center space-x-2">
+  <Checkbox id="terms" />
+  <label htmlFor="terms">Accept terms and conditions</label>
+</div>
+
+// Controlled checkbox
+const [checked, setChecked] = useState(false)
+
+<Checkbox
+  checked={checked}
+  onCheckedChange={setChecked}
+/>
+
+// Checkbox group
+const [items, setItems] = useState({
+  notifications: false,
+  marketing: true,
+  updates: false
+})
+
+<Checkbox
+  checked={items.notifications}
+  onCheckedChange={(checked) =>
+    setItems({ ...items, notifications: checked })
+  }
+/>
+
+// Disabled checkbox
+<Checkbox disabled />
+```
+
+---
+
+## Collapsible
+
+### When to Use / Purpose
+- Show/hide content sections
+- Create expandable content areas
+- Organize information hierarchically
+- Provide progressive disclosure of information
+
+### Anatomy
+```tsx
+<Collapsible>
+  <CollapsibleTrigger>Trigger</CollapsibleTrigger>
+  <CollapsibleContent>Content</CollapsibleContent>
+</Collapsible>
+```
+
+### Properties
+- `open`: boolean - Controls open state
+- `onOpenChange`: function - Callback when open state changes
+- `defaultOpen`: boolean - Initial open state
+
+### Events
+- `onOpenChange`: Fired when collapsible opens/closes
+
+### Example Usages
+```tsx
+// Basic collapsible
+const [isOpen, setIsOpen] = useState(false)
+
+<Collapsible open={isOpen} onOpenChange={setIsOpen}>
+  <CollapsibleTrigger asChild>
+    <Button variant="ghost" className="w-full justify-between">
+      Advanced Settings
+      <ChevronDown className="h-4 w-4" />
+    </Button>
+  </CollapsibleTrigger>
+  <CollapsibleContent>
+    <div className="space-y-2">
+      <p>Advanced configuration options...</p>
+    </div>
+  </CollapsibleContent>
+</Collapsible>
+
+// With animation
+<Collapsible>
+  <CollapsibleTrigger>Show Details</CollapsibleTrigger>
+  <CollapsibleContent className="transition-all duration-300">
+    <p>Detailed information here...</p>
+  </CollapsibleContent>
+</Collapsible>
+```
+
+---
+
+## Command
+
+### When to Use / Purpose
+- Create searchable command palettes
+- Provide keyboard navigation for actions
+- Build autocomplete interfaces
+- Create command-line style interfaces
+
+### Anatomy
+```tsx
+<Command>
+  <CommandInput placeholder="Search..." />
+  <CommandList>
+    <CommandEmpty>No results found.</CommandEmpty>
+    <CommandGroup heading="Suggestions">
+      <CommandItem>Item 1</CommandItem>
+      <CommandItem>Item 2</CommandItem>
+    </CommandGroup>
+  </CommandList>
+</Command>
+```
+
+### Properties
+- `shouldFilter`: boolean - Enable/disable filtering
+- `filter`: function - Custom filter function
+- `value`: string - Current search value
+- `onValueChange`: function - Callback when value changes
+
+### Events
+- `onValueChange`: Fired when search value changes
+- `onSelect`: Fired when item is selected
+
+### Example Usages
+```tsx
+// Basic command palette
+<Command>
+  <CommandInput placeholder="Type a command or search..." />
+  <CommandList>
+    <CommandEmpty>No results found.</CommandEmpty>
+    <CommandGroup heading="Actions">
+      <CommandItem onSelect={() => console.log('New file')}>
+        <File className="mr-2 h-4 w-4" />
+        New File
+      </CommandItem>
+      <CommandItem onSelect={() => console.log('Copy')}>
+        <Copy className="mr-2 h-4 w-4" />
+        Copy
+      </CommandItem>
+    </CommandGroup>
+  </CommandList>
+</Command>
+
+// With custom filtering
+<Command shouldFilter={false}>
+  <CommandInput placeholder="Search..." />
+  <CommandList>
+    {filteredItems.map((item) => (
+      <CommandItem key={item.id} onSelect={() => handleSelect(item)}>
+        {item.name}
+      </CommandItem>
+    ))}
+  </CommandList>
+</Command>
+```
+
+---
+
+## Context Menu
+
+### When to Use / Purpose
+- Provide right-click context menus
+- Show additional actions for elements
+- Create secondary navigation options
+- Display contextual tools and shortcuts
+
+### Anatomy
+```tsx
+<ContextMenu>
+  <ContextMenuTrigger>Trigger</ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem>Action 1</ContextMenuItem>
+    <ContextMenuItem>Action 2</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>
+```
+
+### Properties
+- `open`: boolean - Controls menu visibility
+- `onOpenChange`: function - Callback when open state changes
+- `modal`: boolean - Controls modal behavior
+
+### Events
+- `onOpenChange`: Fired when menu opens/closes
+- `onSelect`: Fired when menu item is selected
+
+### Example Usages
+```tsx
+// Basic context menu
+<ContextMenu>
+  <ContextMenuTrigger className="border rounded p-4">
+    Right click me
+  </ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem>Copy</ContextMenuItem>
+    <ContextMenuItem>Cut</ContextMenuItem>
+    <ContextMenuItem>Paste</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>
+
+// With icons and shortcuts
+<ContextMenu>
+  <ContextMenuTrigger>File</ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem>
+      <Copy className="mr-2 h-4 w-4" />
+      Copy
+      <span className="ml-auto text-xs text-muted-foreground">⌘C</span>
+    </ContextMenuItem>
+    <ContextMenuSeparator />
+    <ContextMenuItem>
+      <Trash className="mr-2 h-4 w-4" />
+      Delete
+    </ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>
+```
+
+---
+
+## Dialog
+
+### When to Use / Purpose
+- Display modal content over the page
+- Show forms or detailed information
+- Create focused user interactions
+- Present important actions or confirmations
+
+### Anatomy
+```tsx
+<Dialog>
+  <DialogTrigger>Trigger</DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Title</DialogTitle>
+      <DialogDescription>Description</DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <DialogClose>Close</DialogClose>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+### Properties
+- `open`: boolean - Controls dialog visibility
+- `onOpenChange`: function - Callback when open state changes
+- `modal`: boolean - Controls modal behavior
+
+### Events
+- `onOpenChange`: Fired when dialog opens/closes
+
+### Example Usages
+```tsx
+// Basic dialog
+<Dialog>
+  <DialogTrigger asChild>
+    <Button>Open Dialog</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Edit Profile</DialogTitle>
+      <DialogDescription>
+        Make changes to your profile here.
+      </DialogDescription>
+    </DialogHeader>
+    <div className="grid gap-4 py-4">
+      <div className="grid grid-cols-4 items-center gap-4">
+        <Label htmlFor="name">Name</Label>
+        <Input id="name" defaultValue="John Doe" className="col-span-3" />
+      </div>
+    </div>
+    <DialogFooter>
+      <Button type="submit">Save changes</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
+// Controlled dialog
+const [open, setOpen] = useState(false)
+
+<Dialog open={open} onOpenChange={setOpen}>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Confirmation</DialogTitle>
+    </DialogHeader>
+    <p>Are you sure you want to proceed?</p>
+    <DialogFooter>
+      <Button variant="outline" onClick={() => setOpen(false)}>
+        Cancel
+      </Button>
+      <Button onClick={handleConfirm}>Confirm</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+---
+
+## Drawer
+
+### When to Use / Purpose
+- Display content in a sliding panel
+- Create mobile-friendly navigation
+- Show additional information or actions
+- Provide contextual content without blocking the main interface
+
+### Anatomy
+```tsx
+<Drawer>
+  <DrawerTrigger>Trigger</DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>Title</DrawerTitle>
+      <DrawerDescription>Description</DrawerDescription>
+    </DrawerHeader>
+    <DrawerBody>Content</DrawerBody>
+    <DrawerFooter>Footer</DrawerFooter>
+  </DrawerContent>
+</Drawer>
+```
+
+### Properties
+- `open`: boolean - Controls drawer visibility
+- `onOpenChange`: function - Callback when open state changes
+- `direction`: "top" | "right" | "bottom" | "left" - Drawer direction
+
+### Events
+- `onOpenChange`: Fired when drawer opens/closes
+
+### Example Usages
+```tsx
+// Basic drawer
+<Drawer>
+  <DrawerTrigger asChild>
+    <Button>Open Drawer</Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>Settings</DrawerTitle>
+      <DrawerDescription>
+        Configure your application settings.
+      </DrawerDescription>
+    </DrawerHeader>
+    <DrawerBody>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <Label>Notifications</Label>
+          <Switch />
+        </div>
+      </div>
+    </DrawerBody>
+    <DrawerFooter>
+      <Button>Save</Button>
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer>
+
+// Side navigation drawer
+<Drawer direction="left">
+  <DrawerTrigger asChild>
+    <Button variant="ghost" size="icon">
+      <Menu className="h-4 w-4" />
+    </Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerBody>
+      <nav className="space-y-2">
+        <a href="/dashboard" className="block p-2 hover:bg-accent">
+          Dashboard
+        </a>
+        <a href="/settings" className="block p-2 hover:bg-accent">
+          Settings
+        </a>
+      </nav>
+    </DrawerBody>
+  </DrawerContent>
+</Drawer>
+```
+
+---
+
+## Dropdown Menu
+
+### When to Use / Purpose
+- Provide additional actions for elements
+- Create navigation menus
+- Show user account options
+- Display contextual actions in a compact format
+
+### Anatomy
+```tsx
+<DropdownMenu>
+  <DropdownMenuTrigger>Trigger</DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem>Action 1</DropdownMenuItem>
+    <DropdownMenuItem>Action 2</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+### Properties
+- `open`: boolean - Controls menu visibility
+- `onOpenChange`: function - Callback when open state changes
+- `modal`: boolean - Controls modal behavior
+
+### Events
+- `onOpenChange`: Fired when menu opens/closes
+- `onSelect`: Fired when menu item is selected
+
+### Example Usages
+```tsx
+// Basic dropdown menu
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Actions</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem>Edit</DropdownMenuItem>
+    <DropdownMenuItem>Delete</DropdownMenuItem>
+    <DropdownMenuItem>Duplicate</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+
+// User account menu
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+      <Avatar className="h-8 w-8">
+        <AvatarImage src="/user.jpg" alt="User" />
+        <AvatarFallback>U</AvatarFallback>
+      </Avatar>
+    </Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent align="end">
+    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem>Profile</DropdownMenuItem>
+    <DropdownMenuItem>Settings</DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem>Log out</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+
+// With icons and shortcuts
+<DropdownMenu>
+  <DropdownMenuTrigger>File</DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem>
+      <File className="mr-2 h-4 w-4" />
+      New File
+      <span className="ml-auto text-xs text-muted-foreground">⌘N</span>
+    </DropdownMenuItem>
+    <DropdownMenuItem>
+      <Folder className="mr-2 h-4 w-4" />
+      Open Folder
+    </DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+---
+
+## Form
+
+### When to Use / Purpose
+- Create structured form layouts
+- Handle form validation and submission
+- Provide consistent form styling
+- Manage form state and errors using native HTML forms
+
+### Anatomy
+```tsx
+<form onSubmit={handleSubmit} className="space-y-6">
+  <div className="space-y-2">
+    <Label htmlFor="email">Email</Label>
+    <Input id="email" name="email" type="email" required />
+  </div>
+  <Button type="submit">Submit</Button>
+</form>
+```
+
+### Properties
+- `onSubmit`: function - Form submission handler
+- `className`: string - Additional CSS classes
+- `method`: "GET" | "POST" - HTTP method (default: "POST")
+- `action`: string - Form action URL
+- `encType`: string - Form encoding type
+
+### Events
+- `onSubmit`: Fired when form is submitted
+- `onChange`: Fired when form inputs change
+- `onReset`: Fired when form is reset
+
+### Example Usages
+```tsx
+// Basic form with native validation
+function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  event.preventDefault()
+  const formData = new FormData(event.currentTarget)
+  const email = formData.get('email')
+  const password = formData.get('password')
+  
+  // Handle form submission
+  console.log({ email, password })
+}
+
+<form onSubmit={handleSubmit} className="space-y-6">
+  <div className="space-y-2">
+    <Label htmlFor="email">Email</Label>
+    <Input 
+      id="email" 
+      name="email" 
+      type="email" 
+      placeholder="Enter your email" 
+      required 
+    />
+  </div>
+  <div className="space-y-2">
+    <Label htmlFor="password">Password</Label>
+    <Input 
+      id="password" 
+      name="password" 
+      type="password" 
+      required 
+    />
+  </div>
+  <Button type="submit">Submit</Button>
+</form>
+
+// Form with controlled inputs
+const [formData, setFormData] = useState({
+  email: '',
+  password: ''
+})
+
+function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  const { name, value } = event.target
+  setFormData(prev => ({ ...prev, [name]: value }))
+}
+
+function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  event.preventDefault()
+  // Handle form submission with formData state
+  console.log(formData)
+}
+
+<form onSubmit={handleSubmit} className="space-y-6">
+  <div className="space-y-2">
+    <Label htmlFor="email">Email</Label>
+    <Input 
+      id="email" 
+      name="email" 
+      type="email" 
+      value={formData.email}
+      onChange={handleChange}
+      placeholder="Enter your email" 
+      required 
+    />
+  </div>
+  <div className="space-y-2">
+    <Label htmlFor="password">Password</Label>
+    <Input 
+      id="password" 
+      name="password" 
+      type="password" 
+      value={formData.password}
+      onChange={handleChange}
+      required 
+    />
+  </div>
+  <Button type="submit">Submit</Button>
+</form>
+
+// Form with select field
+<form onSubmit={handleSubmit} className="space-y-6">
+  <div className="space-y-2">
+    <Label htmlFor="role">Role</Label>
+    <Select name="role" required>
+      <SelectTrigger>
+        <SelectValue placeholder="Select a role" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="admin">Admin</SelectItem>
+        <SelectItem value="user">User</SelectItem>
+        <SelectItem value="moderator">Moderator</SelectItem>
+      </SelectContent>
+    </Select>
+  </div>
+  <Button type="submit">Submit</Button>
+</form>
+
+// Form with validation and error handling
+const [errors, setErrors] = useState<Record<string, string>>({})
+
+function validateForm(formData: FormData) {
+  const newErrors: Record<string, string> = {}
+  
+  const email = formData.get('email') as string
+  if (!email) {
+    newErrors.email = 'Email is required'
+  } else if (!email.includes('@')) {
+    newErrors.email = 'Email must be valid'
+  }
+  
+  const password = formData.get('password') as string
+  if (!password) {
+    newErrors.password = 'Password is required'
+  } else if (password.length < 6) {
+    newErrors.password = 'Password must be at least 6 characters'
+  }
+  
+  return newErrors
+}
+
+function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  event.preventDefault()
+  const formData = new FormData(event.currentTarget)
+  const newErrors = validateForm(formData)
+  
+  if (Object.keys(newErrors).length === 0) {
+    // Form is valid, proceed with submission
+    console.log('Form submitted successfully')
+  } else {
+    setErrors(newErrors)
+  }
+}
+
+<form onSubmit={handleSubmit} className="space-y-6">
+  <div className="space-y-2">
+    <Label htmlFor="email">Email</Label>
+    <Input 
+      id="email" 
+      name="email" 
+      type="email" 
+      className={errors.email ? "border-red-500" : ""}
+    />
+    {errors.email && (
+      <p className="text-sm text-red-500">{errors.email}</p>
+    )}
+  </div>
+  <div className="space-y-2">
+    <Label htmlFor="password">Password</Label>
+    <Input 
+      id="password" 
+      name="password" 
+      type="password" 
+      className={errors.password ? "border-red-500" : ""}
+    />
+    {errors.password && (
+      <p className="text-sm text-red-500">{errors.password}</p>
+    )}
+  </div>
+  <Button type="submit">Submit</Button>
+</form>
+
+// Form with file upload
+<form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-6">
+  <div className="space-y-2">
+    <Label htmlFor="avatar">Profile Picture</Label>
+    <Input 
+      id="avatar" 
+      name="avatar" 
+      type="file" 
+      accept="image/*"
+    />
+  </div>
+  <div className="space-y-2">
+    <Label htmlFor="bio">Bio</Label>
+    <Textarea 
+      id="bio" 
+      name="bio" 
+      placeholder="Tell us about yourself"
+      rows={4}
+    />
+  </div>
+  <Button type="submit">Update Profile</Button>
+</form>
+```
+
+---
+
+## Hover Card
+
+### When to Use / Purpose
+- Show additional information on hover
+- Display previews or tooltips
+- Provide contextual details without navigation
+- Create interactive previews of content
+
+### Anatomy
+```tsx
+<HoverCard>
+  <HoverCardTrigger>Trigger</HoverCardTrigger>
+  <HoverCardContent>Content</HoverCardContent>
+</HoverCard>
+```
+
+### Properties
+- `open`: boolean - Controls card visibility
+- `onOpenChange`: function - Callback when open state changes
+- `openDelay`: number - Delay before opening (ms)
+- `closeDelay`: number - Delay before closing (ms)
+
+### Events
+- `onOpenChange`: Fired when card opens/closes
+
+### Example Usages
+```tsx
+// Basic hover card
+<HoverCard>
+  <HoverCardTrigger asChild>
+    <Button variant="link">@username</Button>
+  </HoverCardTrigger>
+  <HoverCardContent className="w-80">
+    <div className="flex justify-between space-x-4">
+      <Avatar>
+        <AvatarImage src="/user.jpg" />
+        <AvatarFallback>U</AvatarFallback>
+      </Avatar>
+      <div className="space-y-1">
+        <h4 className="text-sm font-semibold">@username</h4>
+        <p className="text-sm">
+          Full name and bio information here.
+        </p>
+      </div>
+    </div>
+  </HoverCardContent>
+</HoverCard>
+
+// Product preview
+<HoverCard>
+  <HoverCardTrigger asChild>
+    <Link href="/product">Product Name</Link>
+  </HoverCardTrigger>
+  <HoverCardContent className="w-80">
+    <div className="space-y-2">
+      <img src="/product.jpg" alt="Product" className="rounded" />
+      <h4 className="font-semibold">Product Name</h4>
+      <p className="text-sm text-muted-foreground">
+        Product description and details.
+      </p>
+      <p className="text-sm font-medium">$99.99</p>
+    </div>
+  </HoverCardContent>
+</HoverCard>
+```
+
+---
+
+## Input
+
+### When to Use / Purpose
+- Collect text input from users
+- Create form fields for data entry
+- Provide search functionality
+- Accept user input for various purposes
+
+### Anatomy
+```tsx
+<Input type="text" placeholder="Enter text..." />
+```
+
+### Properties
+- `type`: string - HTML input type
+- `placeholder`: string - Placeholder text
+- `value`: string - Input value
+- `onChange`: function - Change handler
+- `disabled`: boolean - Disables the input
+- `required`: boolean - Makes input required
+- `className`: string - Additional CSS classes
+
+### Events
+- `onChange`: Fired when input value changes
+- `onFocus`: Fired when input receives focus
+- `onBlur`: Fired when input loses focus
+- `onKeyDown`: Fired when key is pressed
+
+### Example Usages
+```tsx
+// Basic input
+<Input placeholder="Enter your name" />
+
+// Controlled input
+const [value, setValue] = useState("")
+
+<Input
+  value={value}
+  onChange={(e) => setValue(e.target.value)}
+  placeholder="Controlled input"
+/>
+
+// Input with label
+<div className="space-y-2">
+  <Label htmlFor="email">Email</Label>
+  <Input id="email" type="email" placeholder="Enter your email" />
+</div>
+
+// Search input with icon
+<div className="relative">
+  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+  <Input placeholder="Search..." className="pl-8" />
+</div>
+
+// Disabled input
+<Input disabled placeholder="Disabled input" />
+
+// Input with validation
+<Input
+  type="email"
+  placeholder="Email"
+  className={errors.email ? "border-red-500" : ""}
+/>
+```
+
+---
+
+## Label
+
+### When to Use / Purpose
+- Provide accessible labels for form controls
+- Create form field descriptions
+- Improve accessibility and usability
+- Associate text with interactive elements
+
+### Anatomy
+```tsx
+<Label htmlFor="input-id">Label Text</Label>
+```
+
+### Properties
+- `htmlFor`: string - ID of associated element
+- `className`: string - Additional CSS classes
+
+### Events
+- `onClick`: Fired when label is clicked
+
+### Example Usages
+```tsx
+// Basic label
+<Label htmlFor="email">Email Address</Label>
+<Input id="email" type="email" />
+
+// Label with required indicator
+<Label htmlFor="name">
+  Full Name <span className="text-red-500">*</span>
+</Label>
+
+// Label for checkbox
+<div className="flex items-center space-x-2">
+  <Checkbox id="terms" />
+  <Label htmlFor="terms">I agree to the terms and conditions</Label>
+</div>
+
+// Label for select
+<Label htmlFor="country">Country</Label>
+<Select>
+  <SelectTrigger id="country">
+    <SelectValue placeholder="Select a country" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="us">United States</SelectItem>
+    <SelectItem value="ca">Canada</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+---
+
+## Menubar
+
+### When to Use / Purpose
+- Create application menu bars
+- Provide navigation and actions
+- Organize application functionality
+- Create desktop-style interfaces
+
+### Anatomy
+```tsx
+<Menubar>
+  <MenubarMenu>
+    <MenubarTrigger>File</MenubarTrigger>
+    <MenubarContent>
+      <MenubarItem>New</MenubarItem>
+      <MenubarItem>Open</MenubarItem>
+    </MenubarContent>
+  </MenubarMenu>
+</Menubar>
+```
+
+### Properties
+- `className`: string - Additional CSS classes
+
+### Events
+- `onSelect`: Fired when menu item is selected
+
+### Example Usages
+```tsx
+// Basic menubar
+<Menubar>
+  <MenubarMenu>
+    <MenubarTrigger>File</MenubarTrigger>
+    <MenubarContent>
+      <MenubarItem>New File</MenubarItem>
+      <MenubarItem>Open...</MenubarItem>
+      <MenubarItem>Save</MenubarItem>
+      <MenubarSeparator />
+      <MenubarItem>Exit</MenubarItem>
+    </MenubarContent>
+  </MenubarMenu>
+  <MenubarMenu>
+    <MenubarTrigger>Edit</MenubarTrigger>
+    <MenubarContent>
+      <MenubarItem>Undo</MenubarItem>
+      <MenubarItem>Redo</MenubarItem>
+      <MenubarSeparator />
+      <MenubarItem>Cut</MenubarItem>
+      <MenubarItem>Copy</MenubarItem>
+      <MenubarItem>Paste</MenubarItem>
+    </MenubarContent>
+  </MenubarMenu>
+</Menubar>
+
+// With icons and shortcuts
+<Menubar>
+  <MenubarMenu>
+    <MenubarTrigger>File</MenubarTrigger>
+    <MenubarContent>
+      <MenubarItem>
+        <File className="mr-2 h-4 w-4" />
+        New File
+        <span className="ml-auto text-xs text-muted-foreground">⌘N</span>
+      </MenubarItem>
+      <MenubarItem>
+        <Folder className="mr-2 h-4 w-4" />
+        Open Folder
+        <span className="ml-auto text-xs text-muted-foreground">⌘O</span>
+      </MenubarItem>
+    </MenubarContent>
+  </MenubarMenu>
+</Menubar>
+```
+
+---
+
+## Navigation Menu
+
+### When to Use / Purpose
+- Create main navigation for websites
+- Provide hierarchical navigation structure
+- Display navigation with dropdowns
+- Create accessible navigation menus
+
+### Anatomy
+```tsx
+<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Item</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <NavigationMenuLink>Link</NavigationMenuLink>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+
+### Properties
+- `className`: string - Additional CSS classes
+
+### Events
+- `onSelect`: Fired when navigation item is selected
+
+### Example Usages
+```tsx
+// Basic navigation menu
+<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <ul className="grid gap-3 p-4 w-[400px]">
+          <li>
+            <NavigationMenuLink asChild>
+              <a href="/docs/introduction">Introduction</a>
+            </NavigationMenuLink>
+          </li>
+          <li>
+            <NavigationMenuLink asChild>
+              <a href="/docs/installation">Installation</a>
+            </NavigationMenuLink>
+          </li>
+        </ul>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuLink href="/components">Components</NavigationMenuLink>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+
+// With custom styling
+<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <div className="grid w-[500px] grid-cols-2 gap-3 p-4">
+          <div className="space-y-2">
+            <h4 className="font-medium">Product Category 1</h4>
+            <ul className="space-y-1">
+              <li><a href="/product1" className="text-sm">Product 1</a></li>
+              <li><a href="/product2" className="text-sm">Product 2</a></li>
+            </ul>
+          </div>
+          <div className="space-y-2">
+            <h4 className="font-medium">Product Category 2</h4>
+            <ul className="space-y-1">
+              <li><a href="/product3" className="text-sm">Product 3</a></li>
+              <li><a href="/product4" className="text-sm">Product 4</a></li>
+            </ul>
+          </div>
+        </div>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+
+---
+
+## Pagination
+
+### When to Use / Purpose
+- Navigate through large datasets
+- Display page numbers for content
+- Provide navigation for search results
+- Create paginated lists or tables
+
+### Anatomy
+```tsx
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink>1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+### Properties
+- `className`: string - Additional CSS classes
+
+### Events
+- `onClick`: Fired when pagination items are clicked
+
+### Example Usages
+```tsx
+// Basic pagination
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious href="#" />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#" isActive>1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#">2</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#">3</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href="#" />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+
+// Dynamic pagination
+const [currentPage, setCurrentPage] = useState(1)
+const totalPages = 10
+
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious 
+        onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+        className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+      />
+    </PaginationItem>
+    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+      <PaginationItem key={page}>
+        <PaginationLink
+          onClick={() => setCurrentPage(page)}
+          isActive={currentPage === page}
+        >
+          {page}
+        </PaginationLink>
+      </PaginationItem>
+    ))}
+    <PaginationItem>
+      <PaginationNext 
+        onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+        className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+      />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+---
+
+## Popover
+
+### When to Use / Purpose
+- Display additional content in a floating panel
+- Show contextual information or actions
+- Create tooltips with rich content
+- Provide secondary navigation or options
+
+### Anatomy
+```tsx
+<Popover>
+  <PopoverTrigger>Trigger</PopoverTrigger>
+  <PopoverContent>Content</PopoverContent>
+</Popover>
+```
+
+### Properties
+- `open`: boolean - Controls popover visibility
+- `onOpenChange`: function - Callback when open state changes
+- `modal`: boolean - Controls modal behavior
+
+### Events
+- `onOpenChange`: Fired when popover opens/closes
+
+### Example Usages
+```tsx
+// Basic popover
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Open Popover</Button>
+  </PopoverTrigger>
+  <PopoverContent className="w-80">
+    <div className="grid gap-4">
+      <div className="space-y-2">
+        <h4 className="font-medium leading-none">Dimensions</h4>
+        <p className="text-sm text-muted-foreground">
+          Set the dimensions for the layer.
+        </p>
+      </div>
+      <div className="grid gap-2">
+        <div className="grid grid-cols-3 items-center gap-4">
+          <Label htmlFor="width">Width</Label>
+          <Input id="width" defaultValue="100%" className="col-span-2 h-8" />
+        </div>
+        <div className="grid grid-cols-3 items-center gap-4">
+          <Label htmlFor="maxWidth">Max. width</Label>
+          <Input id="maxWidth" defaultValue="300px" className="col-span-2 h-8" />
+        </div>
+      </div>
+    </div>
+  </PopoverContent>
+</Popover>
+
+// Date picker popover
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline" className="justify-start text-left font-normal">
+      <CalendarIcon className="mr-2 h-4 w-4" />
+      Pick a date
+    </Button>
+  </PopoverTrigger>
+  <PopoverContent className="w-auto p-0">
+    <Calendar
+      mode="single"
+      selected={date}
+      onSelect={setDate}
+      initialFocus
+    />
+  </PopoverContent>
+</Popover>
+```
+
+---
+
+## Progress
+
+### When to Use / Purpose
+- Show progress of operations or tasks
+- Display loading states with progress indication
+- Visualize completion percentages
+- Provide feedback for long-running processes
+
+### Anatomy
+```tsx
+<Progress value={progress} className="w-[60%]" />
+```
+
+### Properties
+- `value`: number - Progress value (0-100)
+- `max`: number - Maximum value (default: 100)
+- `className`: string - Additional CSS classes
+
+### Events
+- No specific events (display-only component)
+
+### Example Usages
+```tsx
+// Basic progress bar
+<Progress value={33} />
+
+// Controlled progress
+const [progress, setProgress] = useState(13)
+
+useEffect(() => {
+  const timer = setTimeout(() => setProgress(66), 500)
+  return () => clearTimeout(timer)
+}, [])
+
+<Progress value={progress} className="w-[60%]" />
+
+// Progress with label
+<div className="space-y-2">
+  <div className="flex items-center justify-between">
+    <Label htmlFor="progress">Progress</Label>
+    <span className="text-sm text-muted-foreground">75%</span>
+  </div>
+  <Progress value={75} id="progress" />
+</div>
+
+// Multiple progress bars
+<div className="space-y-4">
+  <div>
+    <div className="flex items-center justify-between mb-2">
+      <span className="text-sm font-medium">Upload</span>
+      <span className="text-sm text-muted-foreground">67%</span>
+    </div>
+    <Progress value={67} />
+  </div>
+  <div>
+    <div className="flex items-center justify-between mb-2">
+      <span className="text-sm font-medium">Processing</span>
+      <span className="text-sm text-muted-foreground">45%</span>
+    </div>
+    <Progress value={45} />
+  </div>
+</div>
+```
+
+---
+
+## Radio Group
+
+### When to Use / Purpose
+- Allow users to select one option from a group
+- Create single-choice forms or surveys
+- Provide mutually exclusive options
+- Create preference or setting selectors
+
+### Anatomy
+```tsx
+<RadioGroup defaultValue="option-one">
+  <div className="flex items-center space-x-2">
+    <RadioGroupItem value="option-one" id="option-one" />
+    <Label htmlFor="option-one">Option One</Label>
+  </div>
+</RadioGroup>
+```
+
+### Properties
+- `value`: string - Selected value
+- `onValueChange`: function - Callback when value changes
+- `defaultValue`: string - Initial selected value
+- `disabled`: boolean - Disables the radio group
+
+### Events
+- `onValueChange`: Fired when selection changes
+
+### Example Usages
+```tsx
+// Basic radio group
+<RadioGroup defaultValue="option-one">
+  <div className="flex items-center space-x-2">
+    <RadioGroupItem value="option-one" id="option-one" />
+    <Label htmlFor="option-one">Option One</Label>
+  </div>
+  <div className="flex items-center space-x-2">
+    <RadioGroupItem value="option-two" id="option-two" />
+    <Label htmlFor="option-two">Option Two</Label>
+  </div>
+</RadioGroup>
+
+// Controlled radio group
+const [value, setValue] = useState("option-one")
+
+<RadioGroup value={value} onValueChange={setValue}>
+  <div className="flex items-center space-x-2">
+    <RadioGroupItem value="light" id="light" />
+    <Label htmlFor="light">Light</Label>
+  </div>
+  <div className="flex items-center space-x-2">
+    <RadioGroupItem value="dark" id="dark" />
+    <Label htmlFor="dark">Dark</Label>
+  </div>
+  <div className="flex items-center space-x-2">
+    <RadioGroupItem value="system" id="system" />
+    <Label htmlFor="system">System</Label>
+  </div>
+</RadioGroup>
+
+// Radio group with cards
+<RadioGroup defaultValue="card" className="grid grid-cols-3 gap-4">
+  <div>
+    <RadioGroupItem value="card" id="card" className="peer sr-only" />
+    <Label
+      htmlFor="card"
+      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+    >
+      <CreditCard className="mb-3 h-6 w-6" />
+      Card
+    </Label>
+  </div>
+  <div>
+    <RadioGroupItem value="paypal" id="paypal" className="peer sr-only" />
+    <Label
+      htmlFor="paypal"
+      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+    >
+      <Paypal className="mb-3 h-6 w-6" />
+      PayPal
+    </Label>
+  </div>
+  <div>
+    <RadioGroupItem value="apple" id="apple" className="peer sr-only" />
+    <Label
+      htmlFor="apple"
+      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+    >
+      <Apple className="mb-3 h-6 w-6" />
+      Apple
+    </Label>
+  </div>
+</RadioGroup>
+```
+
+---
+
+## Scroll Area
+
+### When to Use / Purpose
+- Create custom scrollable areas
+- Provide consistent scrolling behavior
+- Handle overflow content gracefully
+- Create scrollable containers with custom styling
+
+### Anatomy
+```tsx
+<ScrollArea className="h-[200px] w-[350px] rounded-md border p-4">
+  <div className="space-y-4">
+    <h4 className="text-sm font-medium leading-none">Scrollable Content</h4>
+    <p className="text-sm text-muted-foreground">
+      Content that exceeds the container height will be scrollable.
+    </p>
+  </div>
+</ScrollArea>
+```
+
+### Properties
+- `className`: string - Additional CSS classes
+- `type`: "auto" | "always" | "scroll" | "hover" - Scrollbar type
+- `orientation`: "horizontal" | "vertical" - Scroll orientation
+
+### Events
+- No specific events (container component)
+
+### Example Usages
+```tsx
+// Basic scroll area
+<ScrollArea className="h-[200px] w-[350px] rounded-md border p-4">
+  <div className="space-y-4">
+    <h4 className="text-sm font-medium leading-none">Scrollable Content</h4>
+    <p className="text-sm text-muted-foreground">
+      This content will be scrollable when it exceeds the container height.
+    </p>
+    {/* Additional content */}
+  </div>
+</ScrollArea>
+
+// Horizontal scroll area
+<ScrollArea className="w-96 whitespace-nowrap rounded-md border">
+  <div className="flex w-max space-x-4 p-4">
+    <div className="w-[200px] space-y-2">
+      <p className="text-sm font-medium leading-none">Horizontal Scroll</p>
+      <p className="text-xs text-muted-foreground">Scroll horizontally to see more content.</p>
+    </div>
+    <div className="w-[200px] space-y-2">
+      <p className="text-sm font-medium leading-none">More Content</p>
+      <p className="text-xs text-muted-foreground">Additional content here.</p>
+    </div>
+    {/* More content */}
+  </div>
+</ScrollArea>
+
+// Scroll area with custom styling
+<ScrollArea className="h-72 w-48 rounded-md border">
+  <div className="p-4">
+    <h4 className="mb-4 text-sm font-medium leading-none">Tags</h4>
+    <div className="space-y-2">
+      {Array.from({ length: 50 }).map((_, i) => (
+        <div key={i} className="text-sm">
+          Tag {i + 1}
+        </div>
+      ))}
+    </div>
+  </div>
+</ScrollArea>
+```
+
+---
+
+## Select
+
+### When to Use / Purpose
+- Allow users to choose from a list of options
+- Create dropdown selection interfaces
+- Provide form field selection
+- Display hierarchical or grouped options
+
+### Anatomy
+```tsx
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Select an option" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="option1">Option 1</SelectItem>
+    <SelectItem value="option2">Option 2</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+### Properties
+- `value`: string - Selected value
+- `onValueChange`: function - Callback when value changes
+- `defaultValue`: string - Initial selected value
+- `disabled`: boolean - Disables the select
+- `open`: boolean - Controls open state
+- `onOpenChange`: function - Callback when open state changes
+
+### Events
+- `onValueChange`: Fired when selection changes
+- `onOpenChange`: Fired when dropdown opens/closes
+
+### Example Usages
+```tsx
+// Basic select
+<Select>
+  <SelectTrigger className="w-[180px]">
+    <SelectValue placeholder="Select a fruit" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="apple">Apple</SelectItem>
+    <SelectItem value="banana">Banana</SelectItem>
+    <SelectItem value="orange">Orange</SelectItem>
+    <SelectItem value="grape">Grape</SelectItem>
+  </SelectContent>
+</Select>
+
+// Controlled select
+const [value, setValue] = useState("")
+
+<Select value={value} onValueChange={setValue}>
+  <SelectTrigger>
+    <SelectValue placeholder="Select a theme" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="light">Light</SelectItem>
+    <SelectItem value="dark">Dark</SelectItem>
+    <SelectItem value="system">System</SelectItem>
+  </SelectContent>
+</Select>
+
+// Select with groups
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Select a country" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectGroup>
+      <SelectLabel>North America</SelectLabel>
+      <SelectItem value="us">United States</SelectItem>
+      <SelectItem value="ca">Canada</SelectItem>
+      <SelectItem value="mx">Mexico</SelectItem>
+    </SelectGroup>
+    <SelectGroup>
+      <SelectLabel>Europe</SelectLabel>
+      <SelectItem value="uk">United Kingdom</SelectItem>
+      <SelectItem value="fr">France</SelectItem>
+      <SelectItem value="de">Germany</SelectItem>
+    </SelectGroup>
+  </SelectContent>
+</Select>
+
+// Select with icons
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Select a language" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="en">
+      <div className="flex items-center">
+        <Globe className="mr-2 h-4 w-4" />
+        English
+      </div>
+    </SelectItem>
+    <SelectItem value="es">
+      <div className="flex items-center">
+        <Globe className="mr-2 h-4 w-4" />
+        Spanish
+      </div>
+    </SelectItem>
+  </SelectContent>
+</Select>
+```
+
+---
+
+## Separator
+
+### When to Use / Purpose
+- Create visual separation between content sections
+- Divide lists or groups of items
+- Provide clear content boundaries
+- Improve visual hierarchy and readability
+
+### Anatomy
+```tsx
+<Separator />
+```
+
+### Properties
+- `orientation`: "horizontal" | "vertical" - Separator orientation
+- `className`: string - Additional CSS classes
+
+### Events
+- No specific events (display-only component)
+
+### Example Usages
+```tsx
+// Basic separator
+<div className="space-y-4">
+  <div>Content above</div>
+  <Separator />
+  <div>Content below</div>
+</div>
+
+// Vertical separator
+<div className="flex items-center space-x-4">
+  <div>Left content</div>
+  <Separator orientation="vertical" />
+  <div>Right content</div>
+</div>
+
+// Separator with text
+<div className="relative">
+  <div className="absolute inset-0 flex items-center">
+    <Separator />
+  </div>
+  <div className="relative flex justify-center text-xs uppercase">
+    <span className="bg-background px-2 text-muted-foreground">
+      Or continue with
+    </span>
+  </div>
+</div>
+
+// Separator in navigation
+<nav className="space-y-2">
+  <a href="/dashboard" className="block p-2 hover:bg-accent">
+    Dashboard
+  </a>
+  <Separator />
+  <a href="/settings" className="block p-2 hover:bg-accent">
+    Settings
+  </a>
+  <Separator />
+  <a href="/profile" className="block p-2 hover:bg-accent">
+    Profile
+  </a>
+</nav>
+```
+
+---
+
+## Sheet
+
+### When to Use / Purpose
+- Display content in a sliding panel
+- Create mobile-friendly navigation
+- Show additional information or actions
+- Provide contextual content without blocking the main interface
+
+### Anatomy
+```tsx
+<Sheet>
+  <SheetTrigger>Trigger</SheetTrigger>
+  <SheetContent>
+    <SheetHeader>
+      <SheetTitle>Title</SheetTitle>
+      <SheetDescription>Description</SheetDescription>
+    </SheetHeader>
+    <SheetBody>Content</SheetBody>
+  </SheetContent>
+</Sheet>
+```
+
+### Properties
+- `open`: boolean - Controls sheet visibility
+- `onOpenChange`: function - Callback when open state changes
+- `side`: "top" | "right" | "bottom" | "left" - Sheet side
+- `modal`: boolean - Controls modal behavior
+
+### Events
+- `onOpenChange`: Fired when sheet opens/closes
+
+### Example Usages
+```tsx
+// Basic sheet
+<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline">Open Sheet</Button>
+  </SheetTrigger>
+  <SheetContent>
+    <SheetHeader>
+      <SheetTitle>Edit profile</SheetTitle>
+      <SheetDescription>
+        Make changes to your profile here. Click save when you're done.
+      </SheetDescription>
+    </SheetHeader>
+    <div className="grid gap-4 py-4">
+      <div className="grid grid-cols-4 items-center gap-4">
+        <Label htmlFor="name" className="text-right">
+          Name
+        </Label>
+        <Input id="name" value="Pedro Duarte" className="col-span-3" />
+      </div>
+      <div className="grid grid-cols-4 items-center gap-4">
+        <Label htmlFor="username" className="text-right">
+          Username
+        </Label>
+        <Input id="username" value="@peduarte" className="col-span-3" />
+      </div>
+    </div>
+    <SheetFooter>
+      <SheetClose asChild>
+        <Button type="submit">Save changes</Button>
+      </SheetClose>
+    </SheetFooter>
+  </SheetContent>
+</Sheet>
+
+// Side navigation sheet
+<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="ghost" size="icon">
+      <Menu className="h-4 w-4" />
+    </Button>
+  </SheetTrigger>
+  <SheetContent side="left">
+    <SheetHeader>
+      <SheetTitle>Navigation</SheetTitle>
+    </SheetHeader>
+    <nav className="mt-4 space-y-2">
+      <a href="/dashboard" className="block p-2 hover:bg-accent rounded">
+        Dashboard
+      </a>
+      <a href="/settings" className="block p-2 hover:bg-accent rounded">
+        Settings
+      </a>
+      <a href="/profile" className="block p-2 hover:bg-accent rounded">
+        Profile
+      </a>
+    </nav>
+  </SheetContent>
+</Sheet>
+
+// Bottom sheet
+<Sheet>
+  <SheetTrigger asChild>
+    <Button>Open Bottom Sheet</Button>
+  </SheetTrigger>
+  <SheetContent side="bottom" className="h-[400px]">
+    <SheetHeader>
+      <SheetTitle>Bottom Sheet</SheetTitle>
+      <SheetDescription>
+        This sheet slides up from the bottom.
+      </SheetDescription>
+    </SheetHeader>
+    <div className="mt-4">
+      <p>Content goes here...</p>
+    </div>
+  </SheetContent>
+</Sheet>
+```
+
+---
+
+## Skeleton
+
+### When to Use / Purpose
+- Show loading states for content
+- Provide visual placeholders during data fetching
+- Improve perceived performance
+- Create smooth loading experiences
+
+### Anatomy
+```tsx
+<div className="flex items-center space-x-4">
+  <Skeleton className="h-12 w-12 rounded-full" />
+  <div className="space-y-2">
+    <Skeleton className="h-4 w-[250px]" />
+    <Skeleton className="h-4 w-[200px]" />
+  </div>
+</div>
+```
+
+### Properties
+- `className`: string - Additional CSS classes
+
+### Events
+- No specific events (display-only component)
+
+### Example Usages
+```tsx
+// Basic skeleton
+<Skeleton className="h-4 w-[250px]" />
+
+// Card skeleton
+<div className="flex flex-col space-y-3">
+  <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+  <div className="space-y-2">
+    <Skeleton className="h-4 w-[250px]" />
+    <Skeleton className="h-4 w-[200px]" />
+  </div>
+</div>
+
+// User profile skeleton
+<div className="flex items-center space-x-4">
+  <Skeleton className="h-12 w-12 rounded-full" />
+  <div className="space-y-2">
+    <Skeleton className="h-4 w-[250px]" />
+    <Skeleton className="h-4 w-[200px]" />
+  </div>
+</div>
+
+// Table skeleton
+<div className="space-y-3">
+  <div className="flex space-x-4">
+    <Skeleton className="h-4 w-[100px]" />
+    <Skeleton className="h-4 w-[100px]" />
+    <Skeleton className="h-4 w-[100px]" />
+  </div>
+  <div className="flex space-x-4">
+    <Skeleton className="h-4 w-[100px]" />
+    <Skeleton className="h-4 w-[100px]" />
+    <Skeleton className="h-4 w-[100px]" />
+  </div>
+  <div className="flex space-x-4">
+    <Skeleton className="h-4 w-[100px]" />
+    <Skeleton className="h-4 w-[100px]" />
+    <Skeleton className="h-4 w-[100px]" />
+  </div>
+</div>
+```
+
+---
+
+## Slider
+
+### When to Use / Purpose
+- Allow users to select values within a range
+- Create volume controls or brightness settings
+- Provide numerical input with visual feedback
+- Create interactive range selectors
+
+### Anatomy
+```tsx
+<Slider defaultValue={[50]} max={100} step={1} />
+```
+
+### Properties
+- `value`: number[] - Current slider value(s)
+- `onValueChange`: function - Callback when value changes
+- `defaultValue`: number[] - Initial value(s)
+- `max`: number - Maximum value
+- `min`: number - Minimum value (default: 0)
+- `step`: number - Step increment
+- `disabled`: boolean - Disables the slider
+
+### Events
+- `onValueChange`: Fired when slider value changes
+
+### Example Usages
+```tsx
+// Basic slider
+<Slider defaultValue={[50]} max={100} step={1} />
+
+// Controlled slider
+const [value, setValue] = useState([50])
+
+<Slider value={value} onValueChange={setValue} max={100} step={1} />
+
+// Range slider
+<Slider defaultValue={[20, 80]} max={100} step={1} />
+
+// Slider with label and value display
+const [value, setValue] = useState([50])
+
+<div className="space-y-4">
+  <div className="flex items-center justify-between">
+    <Label htmlFor="volume">Volume</Label>
+    <span className="text-sm text-muted-foreground">{value[0]}%</span>
+  </div>
+  <Slider
+    id="volume"
+    value={value}
+    onValueChange={setValue}
+    max={100}
+    step={1}
+  />
+</div>
+
+// Multiple sliders
+<div className="space-y-6">
+  <div className="space-y-2">
+    <Label>Brightness</Label>
+    <Slider defaultValue={[50]} max={100} />
+  </div>
+  <div className="space-y-2">
+    <Label>Contrast</Label>
+    <Slider defaultValue={[75]} max={100} />
+  </div>
+  <div className="space-y-2">
+    <Label>Saturation</Label>
+    <Slider defaultValue={[25]} max={100} />
+  </div>
+</div>
+```
+
+---
+
+## Sonner
+
+### When to Use / Purpose
+- Display toast notifications
+- Show success, error, or informational messages
+- Provide user feedback for actions
+- Create non-intrusive notifications
+
+### Anatomy
+```tsx
+import { toast } from "sonner"
+
+toast("Event has been created")
+```
+
+### Properties
+- `toast`: function - Function to show toast
+- `Toaster`: component - Toast container component
+- `position`: string - Toast position
+- `duration`: number - Toast duration in milliseconds
+
+### Events
+- `onDismiss`: Fired when toast is dismissed
+- `onAction`: Fired when toast action is clicked
+
+### Example Usages
+```tsx
+// Basic toast
+import { toast } from "sonner"
+
+<Button onClick={() => toast("Event has been created")}>
+  Show Toast
+</Button>
+
+// Toast with different types
+<Button onClick={() => toast.success("Success message")}>
+  Success Toast
+</Button>
+<Button onClick={() => toast.error("Error message")}>
+  Error Toast
+</Button>
+<Button onClick={() => toast.info("Info message")}>
+  Info Toast
+</Button>
+
+// Toast with action
+toast("Event has been created", {
+  action: {
+    label: "Undo",
+    onClick: () => console.log("Undo"),
+  },
+})
+
+// Toast with description
+toast("Event has been created", {
+  description: "Your event has been successfully created and saved.",
+})
+
+// Custom toast
+toast.custom((t) => (
+  <div className="bg-white rounded-lg shadow-lg p-4">
+    <h3 className="font-semibold">Custom Toast</h3>
+    <p className="text-sm text-gray-600">This is a custom toast component.</p>
+  </div>
+))
+
+// Toaster component (add to layout)
+import { Toaster } from "sonner"
+
+<Toaster />
+```
+
+---
+
+## Switch
+
+### When to Use / Purpose
+- Toggle between two states (on/off)
+- Enable/disable features or settings
+- Create binary choice interfaces
+- Provide simple yes/no options
+
+### Anatomy
+```tsx
+<div className="flex items-center space-x-2">
+  <Switch id="airplane-mode" />
+  <Label htmlFor="airplane-mode">Airplane mode</Label>
+</div>
+```
+
+### Properties
+- `checked`: boolean - Checked state
+- `onCheckedChange`: function - Callback when state changes
+- `disabled`: boolean - Disables the switch
+- `required`: boolean - Makes switch required
+- `id`: string - Unique identifier
+
+### Events
+- `onCheckedChange`: Fired when switch state changes
+- `onClick`: Fired when switch is clicked
+
+### Example Usages
+```tsx
+// Basic switch
+<div className="flex items-center space-x-2">
+  <Switch id="airplane-mode" />
+  <Label htmlFor="airplane-mode">Airplane mode</Label>
+</div>
+
+// Controlled switch
+const [checked, setChecked] = useState(false)
+
+<Switch checked={checked} onCheckedChange={setChecked} />
+
+// Switch with description
+<div className="flex items-center justify-between">
+  <div className="space-y-0.5">
+    <Label htmlFor="notifications">Notifications</Label>
+    <p className="text-sm text-muted-foreground">
+      Receive notifications about new messages.
+    </p>
+  </div>
+  <Switch id="notifications" />
+</div>
+
+// Multiple switches
+<div className="space-y-4">
+  <div className="flex items-center justify-between">
+    <Label htmlFor="email">Email notifications</Label>
+    <Switch id="email" />
+  </div>
+  <div className="flex items-center justify-between">
+    <Label htmlFor="push">Push notifications</Label>
+    <Switch id="push" />
+  </div>
+  <div className="flex items-center justify-between">
+    <Label htmlFor="sms">SMS notifications</Label>
+    <Switch id="sms" />
+  </div>
+</div>
+
+// Disabled switch
+<Switch disabled />
+```
+
+---
+
+## Table
+
+### When to Use / Purpose
+- Display structured data in rows and columns
+- Show lists of items with multiple properties
+- Create data grids or spreadsheets
+- Organize information in a tabular format
+
+### Anatomy
+```tsx
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Header 1</TableHead>
+      <TableHead>Header 2</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Cell 1</TableCell>
+      <TableCell>Cell 2</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
+
+### Properties
+- `className`: string - Additional CSS classes
+
+### Events
+- `onClick`: Fired when table row is clicked
+
+### Example Usages
+```tsx
+// Basic table
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Email</TableHead>
+      <TableHead>Role</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>John Doe</TableCell>
+      <TableCell>john@example.com</TableCell>
+      <TableCell>Admin</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Jane Smith</TableCell>
+      <TableCell>jane@example.com</TableCell>
+      <TableCell>User</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+// Table with actions
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Status</TableHead>
+      <TableHead>Actions</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {users.map((user) => (
+      <TableRow key={user.id}>
+        <TableCell>{user.name}</TableCell>
+        <TableCell>
+          <Badge variant={user.status === 'active' ? 'default' : 'secondary'}>
+            {user.status}
+          </Badge>
+        </TableCell>
+        <TableCell>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>Edit</DropdownMenuItem>
+              <DropdownMenuItem>Delete</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>
+
+// Sortable table
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>
+        <Button variant="ghost" onClick={() => handleSort('name')}>
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      </TableHead>
+      <TableHead>
+        <Button variant="ghost" onClick={() => handleSort('email')}>
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      </TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {sortedUsers.map((user) => (
+      <TableRow key={user.id}>
+        <TableCell>{user.name}</TableCell>
+        <TableCell>{user.email}</TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>
+```
+
+---
+
+## Tabs
+
+### When to Use / Purpose
+- Organize content into multiple sections
+- Create tabbed interfaces
+- Switch between different views or modes
+- Group related content together
+
+### Anatomy
+```tsx
+<Tabs defaultValue="account" className="w-[400px]">
+  <TabsList>
+    <TabsTrigger value="account">Account</TabsTrigger>
+    <TabsTrigger value="password">Password</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">Account content</TabsContent>
+  <TabsContent value="password">Password content</TabsContent>
+</Tabs>
+```
+
+### Properties
+- `value`: string - Active tab value
+- `onValueChange`: function - Callback when tab changes
+- `defaultValue`: string - Initial active tab
+- `orientation`: "horizontal" | "vertical" - Tab orientation
+
+### Events
+- `onValueChange`: Fired when active tab changes
+
+### Example Usages
+```tsx
+// Basic tabs
+<Tabs defaultValue="account" className="w-[400px]">
+  <TabsList>
+    <TabsTrigger value="account">Account</TabsTrigger>
+    <TabsTrigger value="password">Password</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">
+    <div className="space-y-4">
+      <h3 className="text-lg font-medium">Account</h3>
+      <p className="text-sm text-muted-foreground">
+        Make changes to your account here.
+      </p>
+    </div>
+  </TabsContent>
+  <TabsContent value="password">
+    <div className="space-y-4">
+      <h3 className="text-lg font-medium">Password</h3>
+      <p className="text-sm text-muted-foreground">
+        Change your password here.
+      </p>
+    </div>
+  </TabsContent>
+</Tabs>
+
+// Controlled tabs
+const [value, setValue] = useState("account")
+
+<Tabs value={value} onValueChange={setValue}>
+  <TabsList>
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="analytics">Analytics</TabsTrigger>
+    <TabsTrigger value="reports">Reports</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">
+    <div>Overview content</div>
+  </TabsContent>
+  <TabsContent value="analytics">
+    <div>Analytics content</div>
+  </TabsContent>
+  <TabsContent value="reports">
+    <div>Reports content</div>
+  </TabsContent>
+</Tabs>
+
+// Vertical tabs
+<Tabs defaultValue="account" orientation="vertical" className="w-[400px]">
+  <TabsList className="grid w-full grid-cols-3">
+    <TabsTrigger value="account">Account</TabsTrigger>
+    <TabsTrigger value="password">Password</TabsTrigger>
+    <TabsTrigger value="settings">Settings</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">Account content</TabsContent>
+  <TabsContent value="password">Password content</TabsContent>
+  <TabsContent value="settings">Settings content</TabsContent>
+</Tabs>
+
+// Tabs with icons
+<Tabs defaultValue="account">
+  <TabsList>
+    <TabsTrigger value="account">
+      <User className="mr-2 h-4 w-4" />
+      Account
+    </TabsTrigger>
+    <TabsTrigger value="settings">
+      <Settings className="mr-2 h-4 w-4" />
+      Settings
+    </TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">Account content</TabsContent>
+  <TabsContent value="settings">Settings content</TabsContent>
+</Tabs>
+```
+
+---
+
+## Textarea
+
+### When to Use / Purpose
+- Collect multi-line text input from users
+- Create comment or description fields
+- Provide space for longer text content
+- Allow users to write paragraphs or notes
+
+### Anatomy
+```tsx
+<Textarea placeholder="Type your message here." />
+```
+
+### Properties
+- `placeholder`: string - Placeholder text
+- `value`: string - Textarea value
+- `onChange`: function - Change handler
+- `disabled`: boolean - Disables the textarea
+- `required`: boolean - Makes textarea required
+- `rows`: number - Number of visible rows
+- `className`: string - Additional CSS classes
+
+### Events
+- `onChange`: Fired when textarea value changes
+- `onFocus`: Fired when textarea receives focus
+- `onBlur`: Fired when textarea loses focus
+- `onKeyDown`: Fired when key is pressed
+
+### Example Usages
+```tsx
+// Basic textarea
+<Textarea placeholder="Type your message here." />
+
+// Controlled textarea
+const [value, setValue] = useState("")
+
+<Textarea
+  value={value}
+  onChange={(e) => setValue(e.target.value)}
+  placeholder="Controlled textarea"
+/>
+
+// Textarea with label
+<div className="space-y-2">
+  <Label htmlFor="message">Message</Label>
+  <Textarea
+    id="message"
+    placeholder="Type your message here."
+    rows={4}
+  />
+</div>
+
+// Textarea with character count
+const [value, setValue] = useState("")
+const maxLength = 500
+
+<div className="space-y-2">
+  <Textarea
+    value={value}
+    onChange={(e) => setValue(e.target.value)}
+    placeholder="Type your message here."
+    maxLength={maxLength}
+  />
+  <div className="text-sm text-muted-foreground">
+    {value.length}/{maxLength} characters
+  </div>
+</div>
+
+// Disabled textarea
+<Textarea disabled placeholder="Disabled textarea" />
+
+// Textarea with validation
+<Textarea
+  placeholder="Enter your bio"
+  className={errors.bio ? "border-red-500" : ""}
+/>
+```
+
+---
+
+## Toggle
+
+### When to Use / Purpose
+- Toggle between two states with visual feedback
+- Create compact on/off controls
+- Provide quick action toggles
+- Show active/inactive states
+
+### Anatomy
+```tsx
+<Toggle aria-label="Toggle bold">
+  <Bold className="h-4 w-4" />
+</Toggle>
+```
+
+### Properties
+- `pressed`: boolean - Pressed state
+- `onPressedChange`: function - Callback when state changes
+- `disabled`: boolean - Disables the toggle
+- `size`: "default" | "sm" | "lg" - Size variant
+- `variant`: "default" | "outline" - Visual style
+
+### Events
+- `onPressedChange`: Fired when toggle state changes
+- `onClick`: Fired when toggle is clicked
+
+### Example Usages
+```tsx
+// Basic toggle
+<Toggle aria-label="Toggle bold">
+  <Bold className="h-4 w-4" />
+</Toggle>
+
+// Controlled toggle
+const [isPressed, setIsPressed] = useState(false)
+
+<Toggle pressed={isPressed} onPressedChange={setIsPressed}>
+  <Bold className="h-4 w-4" />
+</Toggle>
+
+// Toggle with text
+<Toggle aria-label="Toggle italic">
+  <Italic className="mr-2 h-4 w-4" />
+  Italic
+</Toggle>
+
+// Toggle group
+<ToggleGroup type="single">
+  <Toggle value="bold" aria-label="Toggle bold">
+    <Bold className="h-4 w-4" />
+  </Toggle>
+  <Toggle value="italic" aria-label="Toggle italic">
+    <Italic className="h-4 w-4" />
+  </Toggle>
+  <Toggle value="underline" aria-label="Toggle underline">
+    <Underline className="h-4 w-4" />
+  </Toggle>
+</ToggleGroup>
+
+// Multiple selection toggle group
+<ToggleGroup type="multiple">
+  <Toggle value="bold" aria-label="Toggle bold">
+    <Bold className="h-4 w-4" />
+  </Toggle>
+  <Toggle value="italic" aria-label="Toggle italic">
+    <Italic className="h-4 w-4" />
+  </Toggle>
+  <Toggle value="underline" aria-label="Toggle underline">
+    <Underline className="h-4 w-4" />
+  </Toggle>
+</ToggleGroup>
+
+// Toggle with different sizes
+<div className="flex items-center space-x-2">
+  <Toggle size="sm" aria-label="Small toggle">
+    <Bold className="h-3 w-3" />
+  </Toggle>
+  <Toggle size="default" aria-label="Default toggle">
+    <Bold className="h-4 w-4" />
+  </Toggle>
+  <Toggle size="lg" aria-label="Large toggle">
+    <Bold className="h-5 w-5" />
+  </Toggle>
+</div>
+```
+
+---
+
+## Tooltip
+
+### When to Use / Purpose
+- Show additional information on hover
+- Provide context for UI elements
+- Display helpful hints or explanations
+- Create accessible help text
+
+### Anatomy
+```tsx
+<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger>Trigger</TooltipTrigger>
+    <TooltipContent>Content</TooltipContent>
+  </Tooltip>
+</TooltipProvider>
+```
+
+### Properties
+- `open`: boolean - Controls tooltip visibility
+- `onOpenChange`: function - Callback when open state changes
+- `delayDuration`: number - Delay before showing tooltip (ms)
+- `skipDelayDuration`: number - Delay before hiding tooltip (ms)
+
+### Events
+- `onOpenChange`: Fired when tooltip opens/closes
+
+### Example Usages
+```tsx
+// Basic tooltip
+<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button variant="outline">Hover me</Button>
+    </TooltipTrigger>
+    <TooltipContent>
+      <p>Add to library</p>
+    </TooltipContent>
+  </Tooltip>
+</TooltipProvider>
+
+// Tooltip with icon
+<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button variant="ghost" size="icon">
+        <HelpCircle className="h-4 w-4" />
+      </Button>
+    </TooltipTrigger>
+    <TooltipContent>
+      <p>Click to get help</p>
+    </TooltipContent>
+  </Tooltip>
+</TooltipProvider>
+
+// Tooltip with custom delay
+<TooltipProvider delayDuration={1000}>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button>Long delay tooltip</Button>
+    </TooltipTrigger>
+    <TooltipContent>
+      <p>This tooltip appears after 1 second</p>
+    </TooltipContent>
+  </Tooltip>
+</TooltipProvider>
+
+// Multiple tooltips
+<TooltipProvider>
+  <div className="flex items-center space-x-2">
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button variant="outline">Save</Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Save your changes</p>
+      </TooltipContent>
+    </Tooltip>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button variant="outline">Cancel</Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Discard your changes</p>
+      </TooltipContent>
+    </Tooltip>
+  </div>
+</TooltipProvider>
+
+// Tooltip with rich content
+<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button variant="outline">User Info</Button>
+    </TooltipTrigger>
+    <TooltipContent className="w-80">
+      <div className="space-y-2">
+        <h4 className="font-semibold">John Doe</h4>
+        <p className="text-sm text-muted-foreground">
+          Software Engineer at Example Corp
+        </p>
+        <p className="text-sm">john.doe@example.com</p>
+      </div>
+    </TooltipContent>
+  </Tooltip>
+</TooltipProvider>
+```
+
+---
+
+## Conclusion
+
+This documentation covers all the major Shadcn UI components with their purposes, properties, events, and usage examples. Each component is designed to be accessible, customizable, and follows modern React patterns. When using these components:
+
+1. **Accessibility**: All components are built with accessibility in mind using Radix UI primitives
+2. **Customization**: Use Tailwind CSS classes to customize appearance
+3. **TypeScript**: All components include proper TypeScript support
+4. **Composition**: Components are designed to work together seamlessly
+5. **Performance**: Components are optimized for performance and bundle size
+
+For more detailed information about specific components or advanced usage patterns, refer to the official Shadcn UI documentation and Radix UI documentation.
+
