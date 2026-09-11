@@ -24,7 +24,28 @@ import {
   SearchIcon,
   XIcon,
 } from "lucide-react";
-import FilterPopover from "./Header/FilterPopover";
+import { useEffect, useMemo, useState } from "react";
+import Fuse from "fuse.js";
+import { Checkbox } from "@/components/ui/shadcn/checkbox";
+import {
+  Popover,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/shadcn/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/shadcn/select";
+import { FilterIcon } from "lucide-react";
+import { useDebounce } from "use-debounce";
+import { useProjectStore } from "@/store/project.store";
+import { getProgressForProject } from "@/lib/utils";
+import { differenceInDays } from "date-fns";
 
 interface HeaderProps {
   view: ProjectViewType;
@@ -37,6 +58,94 @@ interface HeaderProps {
   onBulkArchive: () => void;
 }
 
+type ProgressFilter = "any" | "not-started" | "in-progress" | "done";
+type DueDateFileter = "any" | "week" | "month" | "overdue";
+type SortFilter = "updated" | "name" | "due-date" | "progress";
+
+const filterItems = {
+  status: ["Active", "Completed", "On Hold"] as IProject["status"][],
+  progress: [
+    { lable: "Any progress", value: "any" },
+    { lable: "Not started", value: "not-started" },
+    { lable: "In progress", value: "in-progress" },
+    { lable: "All Done", value: "done" },
+  ] satisfies { lable: string; value: ProgressFilter }[],
+  dueDate: [
+    { lable: "Any date", value: "any" },
+    { lable: "Next 7 days", value: "week" },
+    { lable: "Next 30 days", value: "month" },
+    { lable: "Overdue", value: "overdue" },
+  ] satisfies { lable: string; value: DueDateFileter }[],
+  sort: [
+    { lable: "Recently updated", value: "updated" },
+    { lable: "Project name", value: "name" },
+    { lable: "Due date", value: "due-date" },
+    { lable: "Progress", value: "progress" },
+  ] satisfies { lable: string; value: SortFilter }[],
+};
+
+function filterByProgress(projects: IProject[], type: ProgressFilter) {
+  switch (type) {
+    case "any":
+      return projects;
+    case "not-started":
+      return projects.filter((project) => getProgressForProject(project) === 0);
+    case "in-progress":
+      return projects.filter((project) => {
+        const progress = getProgressForProject(project);
+        return progress > 0 && progress < 100;
+      });
+    case "done":
+      return projects.filter(
+        (project) => getProgressForProject(project) === 100,
+      );
+  }
+}
+
+function filterByDueDate(project: IProject[], type: DueDateFileter) {
+  switch (type) {
+    case "any":
+      return project;
+    case "week":
+      return project.filter((p) => {
+        const difference = differenceInDays(p.dueDate, Date.now());
+        return difference > 0 && difference < 7;
+      });
+    case "month":
+      return project.filter((p) => {
+        const difference = differenceInDays(p.dueDate, Date.now());
+        return difference > 0 && difference < 30;
+      });
+    case "overdue":
+      return project.filter((p) => {
+        const difference = differenceInDays(p.dueDate, Date.now());
+        return difference < 0;
+      });
+  }
+}
+
+function SortProjects(projects: IProject[], type: SortFilter) {
+  switch (type) {
+    case "updated":
+      return projects.sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+      );
+    case "name":
+      return projects.sort((a, b) => a.name.localeCompare(b.name));
+    case "due-date":
+      return projects.sort(
+        (a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime(),
+      );
+    case "progress":
+      return projects.sort(
+        (a, b) => getProgressForProject(a) - getProgressForProject(b),
+      );
+    default:
+      return projects;
+  }
+}
+
 export default function Header({
   view,
   onViewChange,
@@ -47,6 +156,60 @@ export default function Header({
   onBulkStatusChange,
   onBulkArchive,
 }: HeaderProps) {
+  const [inputValue, setInputValue] = useState<string>("");
+  const [value] = useDebounce(inputValue, 300);
+
+  interface Filter {
+    status: Set<string>;
+    progress: ProgressFilter;
+    dueDate: DueDateFileter;
+    sort: SortFilter;
+  }
+  const [filters, setFilters] = useState<Filter>({
+    status: new Set(),
+    progress: "any",
+    dueDate: "any",
+    sort: "updated",
+  });
+
+  const projects = useProjectStore((state) => state.projects);
+  const setFilteredProjects = useProjectStore(
+    (state) => state.setFilteredProjects,
+  );
+
+  const fuse = useMemo(() => {
+    return new Fuse(projects, {
+      keys: [
+        "name",
+        "description",
+        "taskCategories.name",
+        "status",
+        "dueDate",
+        "tasks.name",
+      ],
+      includeScore: true,
+      threshold: 0.5,
+    });
+  }, [projects]);
+
+  useEffect(() => {
+    let filteredProjects = fuse
+      .search(value.trim())
+      .map((result) => result.item);
+
+    if (filters.status.size) {
+      filteredProjects = filteredProjects.filter((p) =>
+        filters.status.has(p.status),
+      );
+    }
+
+    filteredProjects = filterByProgress(filteredProjects, filters.progress);
+    filteredProjects = filterByDueDate(filteredProjects, filters.dueDate);
+    filteredProjects = SortProjects(filteredProjects, filters.sort);
+
+    setFilteredProjects(filteredProjects);
+  }, [fuse, value, setFilteredProjects, filters]);
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-5 justify-between">
@@ -56,9 +219,148 @@ export default function Header({
               <InputGroupAddon>
                 <SearchIcon />
               </InputGroupAddon>
-              <InputGroupInput placeholder="Search projects..." />
+              <InputGroupInput
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="Search projects..."
+              />
+              <InputGroupAddon align={"inline-end"}>
+                <Button
+                  size={"sm"}
+                  variant={"ghost"}
+                  onClick={() => setInputValue("")}
+                >
+                  <XIcon />
+                </Button>
+              </InputGroupAddon>
             </InputGroup>
-            <FilterPopover />
+            <Popover>
+              <PopoverTrigger
+                render={
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    aria-label="Filter projects"
+                  />
+                }
+              >
+                <FilterIcon />
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-80">
+                <PopoverHeader className="border-b pb-3">
+                  <PopoverTitle>Filter projects</PopoverTitle>
+                </PopoverHeader>
+                <div className="grid gap-4 pt-1">
+                  <div className="grid gap-2">
+                    <p className="text-xs font-medium text-muted-foreground">
+                      Status
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {(
+                        [
+                          "Active",
+                          "On Hold",
+                          "Completed",
+                          "Archived",
+                        ] as IProject["status"][]
+                      ).map((status) => (
+                        <label
+                          key={status}
+                          className="flex items-center gap-2 text-sm"
+                        >
+                          <Checkbox
+                            checked={filters.status.has(status)}
+                            aria-label={`Filter by ${status}`}
+                            onCheckedChange={() => {
+                              const updatedSet = new Set(filters.status);
+                              if (filters.status.has(status))
+                                updatedSet.delete(status);
+                              else updatedSet.add(status);
+                              setFilters((prev) => ({
+                                ...prev,
+                                status: updatedSet,
+                              }));
+                            }}
+                          />
+                          {status}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Progress Filter */}
+                  <div className="grid gap-2">
+                    <p className="text-xs font-medium text-muted-foreground">
+                      Progress
+                    </p>
+                    <Select
+                      value={filters.progress}
+                      onValueChange={(value) =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          progress: value as ProgressFilter,
+                        }))
+                      }
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {filterItems.progress.map((i) => (
+                          <SelectItem value={i.value}>{i.lable}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid gap-2 grid-cols-2">
+                    {/* Due Date Filter */}
+                    <Select
+                      value={filters.dueDate}
+                      onValueChange={(value) =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          dueDate: value as DueDateFileter,
+                        }))
+                      }
+                    >
+                      <SelectTrigger
+                        className="w-full"
+                        aria-label="Filter by due date"
+                      >
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {filterItems.dueDate.map((i) => (
+                          <SelectItem value={i.value}>{i.lable}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {/* Sort Filter */}
+                    <Select
+                      value={filters.sort}
+                      onValueChange={(value) =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          sort: value as SortFilter,
+                        }))
+                      }
+                    >
+                      <SelectTrigger
+                        className="w-full"
+                        aria-label="Sort projects"
+                      >
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {filterItems.sort.map((i) => (
+                          <SelectItem value={i.value}>{i.lable}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
           <div className="flex gap-2">
             <Tabs

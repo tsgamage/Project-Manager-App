@@ -43,7 +43,7 @@ export function NavProjects({
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton render={<Link to={item.url} />}>
               {/* {item.icon} */}
-              <PinIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+              <PinIcon className="h-4 w-4 text-muted-foreground" />
               <span>{item.name}</span>
             </SidebarMenuButton>
             <DropdownMenu>
@@ -80,12 +80,6 @@ export function NavProjects({
             </DropdownMenu>
           </SidebarMenuItem>
         ))}
-        <SidebarMenuItem>
-          <SidebarMenuButton>
-            <MoreHorizontalIcon />
-            <span>More</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
   );

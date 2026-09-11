@@ -9,6 +9,10 @@ type ProjectsStore = {
   initializeProjects: () => void;
   setProjects: (projects?: IProject[]) => void;
 
+  filteredProjects: IProject[];
+  setFilteredProjects: (projects?: IProject[]) => void;
+  resetFilteredProjects: () => void;
+
   getProjectById: (pId: IProject["id"]) => IProject | undefined;
   changeProjectStatus: (
     pId: IProject["id"],
@@ -52,11 +56,12 @@ type ProjectsStore = {
 
 export const useProjectStore = create<ProjectsStore>((set, get) => ({
   projects: [],
+  filteredProjects: [],
 
   initializeProjects: () => {
     set(() => {
       const storedProjects = DUMMY_PROJETCS;
-      return { projects: storedProjects };
+      return { projects: storedProjects, filteredProjects: storedProjects };
     });
   },
 
@@ -68,6 +73,16 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
     }));
   },
 
+  setFilteredProjects: (projects) => {
+    set(() => ({
+      filteredProjects: projects || [],
+    }));
+  },
+
+  resetFilteredProjects: () => {
+    set({ filteredProjects: get().projects });
+  },
+
   getProjectById: (pId) => {
     return get().projects.find((project) => project.id === pId);
   },
@@ -76,6 +91,7 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
     set((state) => ({
       projects: state.projects.filter((project) => project.id !== pId),
     }));
+    get().resetFilteredProjects();
   },
 
   changeProjectStatus: (pId, status) => {
@@ -86,6 +102,7 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
       });
       return { projects: newProjects };
     });
+    get().resetFilteredProjects();
   },
 
   // Category Related methods
@@ -110,6 +127,7 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
       });
       return { projects: newProjects };
     });
+    get().resetFilteredProjects();
   },
 
   updateCategory: (pId, catId, catData) => {
@@ -134,6 +152,7 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
       });
       return { projects: updatedProjects };
     });
+    get().resetFilteredProjects();
   },
 
   deleteCategory: (pId, cId) => {
@@ -154,6 +173,7 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
       });
       return { projects: updatedProjects };
     });
+    get().resetFilteredProjects();
   },
 
   // Task Related methods
@@ -192,6 +212,7 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
 
       return { projects: newProjects };
     });
+    get().resetFilteredProjects();
   },
 
   addNewTask: (pId, catId, taskData) => {
@@ -227,6 +248,7 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
 
       return { projects: newProjects };
     });
+    get().resetFilteredProjects();
   },
 
   updateTask: (pId, catId, taskId, taskData) => {
@@ -263,6 +285,7 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
 
       return { projects: newProjects };
     });
+    get().resetFilteredProjects();
   },
 
   deleteTask: (pId, catId, taskId) => {
@@ -293,5 +316,6 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
 
       return { projects: newProjects };
     });
+    get().resetFilteredProjects();
   },
 }));

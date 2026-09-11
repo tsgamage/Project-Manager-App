@@ -80,9 +80,9 @@ export default function ProjectViewPage() {
         variant="ghost"
         size="sm"
         className="-ml-2"
-        onClick={() => navigate("/project/all")}
+        onClick={() => navigate(-1)}
       >
-        <ArrowLeftIcon /> Back to projects
+        <ArrowLeftIcon /> Go Back
       </Button>
 
       <Tabs defaultValue="details" className="min-w-0">

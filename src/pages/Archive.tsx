@@ -1,15 +1,11 @@
 import { useMemo, useState } from "react";
 import PageWrapper from "@/components/Page-Wrapper";
 import ProjectCard from "@/components/pages/Projects/Card";
-import Header from "@/components/pages/Projects/Header";
 import { Button } from "@/components/ui/shadcn/button";
 import type { IProject } from "@/types/project.types";
 import { useProjectStore } from "@/store/project.store";
 
-export type ProjectViewType = "card" | "list";
-
-export default function ProjectPage() {
-  const [view, setView] = useState<ProjectViewType>("card");
+export default function ArchivePage() {
   const [selectedProjectIds, setSelectedProjectIds] = useState<Set<string>>(
     new Set(),
   );
@@ -20,26 +16,11 @@ export default function ProjectPage() {
   );
 
   const visibleProjects = useMemo(
-    () => filteredProjects.filter((project) => project.status !== "Archived"),
+    () => filteredProjects.filter((project) => project.status === "Archived"),
     [filteredProjects],
   );
 
-  const toggleProjectSelection = (projectId: string) => {
-    setSelectedProjectIds((current) => {
-      const updatedSet = new Set(current);
-      if (updatedSet.has(projectId)) updatedSet.delete(projectId);
-      else updatedSet.add(projectId);
-      return updatedSet;
-    });
-  };
-
   const clearSelection = () => setSelectedProjectIds(new Set());
-
-  const selectAllVisible = () => {
-    setSelectedProjectIds(
-      new Set(visibleProjects.map((project) => project.id)),
-    );
-  };
 
   const updateProjectStatus = (
     projectIds: string[],
@@ -56,40 +37,21 @@ export default function ProjectPage() {
   };
 
   const selectedIds = [...selectedProjectIds];
-  const allVisibleSelected =
-    visibleProjects.length > 0 &&
-    visibleProjects.every((project) => selectedProjectIds.has(project.id));
 
   return (
     <PageWrapper>
       <div className="space-y-8 px-5 py-6 lg:px-8">
-        <Header
-          view={view}
-          onViewChange={setView}
-          selectedCount={selectedProjectIds.size}
-          allVisibleSelected={allVisibleSelected}
-          onSelectAll={selectAllVisible}
-          onClearSelection={clearSelection}
-          onBulkStatusChange={(status) =>
-            updateProjectStatus(selectedIds, status)
-          }
-          onBulkArchive={() => archiveProjects(selectedIds)}
-        />
         <section
-          className={
-            view === "card"
-              ? "grid gap-4 md:grid-cols-2 lg:grid-cols-3"
-              : "grid gap-3"
-          }
+          className={"grid gap-4 md:grid-cols-2 lg:grid-cols-3"}
           aria-label="Projects"
         >
           {visibleProjects.map((project) => (
             <ProjectCard
               key={project.id}
               project={project}
-              view={view}
-              isSelected={selectedProjectIds.has(project.id)}
-              onSelect={toggleProjectSelection}
+              view={"card"}
+              isSelected={false}
+              onSelect={() => {}}
               onArchive={(projectId) => archiveProjects([projectId])}
               selectedItemCount={selectedIds.length}
               onStatusChange={(projectId, status) =>
@@ -100,7 +62,8 @@ export default function ProjectPage() {
         </section>
         <footer className="flex items-center justify-between border-t pt-4 text-xs text-muted-foreground">
           <span>
-            Showing {visibleProjects.length} of {filteredProjects.length} projects
+            Showing {visibleProjects.length} of {filteredProjects.length}{" "}
+            projects
           </span>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" disabled>

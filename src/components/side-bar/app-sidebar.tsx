@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/shadcn/sidebar";
 import {
   Settings2Icon,
-  SendIcon,
   FrameIcon,
   PieChartIcon,
   MapIcon,
@@ -24,8 +23,11 @@ import {
   CircleCheckBigIcon,
   ChartNoAxesCombinedIcon,
   BoxIcon,
+  ArchiveIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useProjectStore } from "@/store/project.store";
+import { Separator } from "../ui/shadcn/separator";
 
 const data = {
   user: {
@@ -55,11 +57,6 @@ const data = {
       title: "Projects",
       url: "/project/all",
       icon: <BoxIcon />,
-      items: [
-        { title: "Leaning Management System for Malith Wasalage", url: "/project/p1" },
-        { title: "Explorer", url: "#" },
-        { title: "Quantum", url: "#" },
-      ],
     },
   ],
   pinnedProjects: [
@@ -68,12 +65,25 @@ const data = {
     { name: "Travel", url: "#", icon: <MapIcon /> },
   ],
   navSecondary: [
+    { title: "Archive", url: "/archive", icon: <ArchiveIcon /> },
     { title: "Settings", url: "/settings", icon: <Settings2Icon /> },
-    { title: "Feedback", url: "#", icon: <SendIcon /> },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const projects = useProjectStore((state) => state.projects);
+  const navMain = data.navMain.map((item) => {
+    if (item.title === "Projects") {
+      return {
+        ...item,
+        items: projects.map((project) => ({
+          title: project.name,
+          url: `/project/${project.id}`,
+        })),
+      };
+    } else return item;
+  });
+
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -85,22 +95,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">Project Manager</span>
-                <span className="truncate text-xs"></span>
+                <span className="truncate text-xs">by Crownix - v0.0.1</span>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.pinnedProjects} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavMain items={navMain} />
       </SidebarContent>
-      <SidebarFooter>
-        <div className="flex flex-col items-center justify-center gap-1 p-2 text-center bg-emerald-500/5 rounded-lg border border-emerald-500/10 text-muted-foreground">
-          <p className="text-xs">Crownix Project Manager</p>
-          <p className="text-xs">v0.0.1</p>
-        </div>
+      <SidebarFooter className="flex gap-0">
+        <NavProjects projects={data.pinnedProjects} />
+        <Separator />
+        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarFooter>
     </Sidebar>
   );

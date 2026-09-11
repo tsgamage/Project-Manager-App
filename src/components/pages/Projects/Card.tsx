@@ -27,10 +27,16 @@ import {
 } from "@/components/ui/shadcn/progress";
 import { Separator } from "@/components/ui/shadcn/separator";
 import type { IProject } from "@/types/project.types";
-import { ArchiveIcon, EditIcon, InfoIcon, SquareCheckIcon } from "lucide-react";
+import {
+  ActivityIcon,
+  ArchiveIcon,
+  InfoIcon,
+  SquareCheckIcon,
+} from "lucide-react";
 import { cn } from "cn";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "date-fns";
+import { getProgressForProject } from "@/lib/utils";
 
 interface ProjectCardProps {
   project: IProject;
@@ -78,42 +84,17 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   const navigate = useNavigate();
 
-  const completedTasksCount =
-    project.taskCategories?.reduce(
-      (acc, category) =>
-        acc + (category.tasks?.filter((task) => task.completed).length ?? 0),
-      0,
-    ) || 0;
-
-  const allTasksCount =
-    project.taskCategories?.reduce(
-      (acc, cat) => acc + (cat.tasks?.length ?? 0),
-      0,
-    ) || 0;
-
-  const progress = allTasksCount
-    ? Math.floor((completedTasksCount / allTasksCount) * 100)
-    : 0;
-
+  const progress = getProgressForProject(project);
   const statusOptions = ["Active", "On Hold", "Completed"] as const;
 
   const projectContextMenu = (
     <>
       <ContextMenuGroup>
-        <ContextMenuItem onClick={() => onSelect(project.id)}>
-          <SquareCheckIcon />
-          {isSelected ? "Deselect" : "Select"}
-        </ContextMenuItem>
-        <ContextMenuItem>
-          <EditIcon />
-          Edit Info
-        </ContextMenuItem>
-        <ContextMenuItem>
-          <InfoIcon />
-          Properties
-        </ContextMenuItem>
         <ContextMenuSub>
-          <ContextMenuSubTrigger>Change status</ContextMenuSubTrigger>
+          <ContextMenuSubTrigger>
+            <ActivityIcon />
+            Change status
+          </ContextMenuSubTrigger>
           <ContextMenuSubContent>
             {statusOptions.map((status) => (
               <ContextMenuItem
@@ -125,6 +106,14 @@ export default function ProjectCard({
             ))}
           </ContextMenuSubContent>
         </ContextMenuSub>
+        <ContextMenuItem onClick={() => onSelect(project.id)}>
+          <SquareCheckIcon />
+          {isSelected ? "Deselect" : "Select"}
+        </ContextMenuItem>
+        <ContextMenuItem>
+          <InfoIcon />
+          Properties
+        </ContextMenuItem>
       </ContextMenuGroup>
       <ContextMenuSeparator />
       <ContextMenuGroup>
