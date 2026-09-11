@@ -3,6 +3,8 @@ import type { StrictOmit } from "@/lib/utils";
 import type { IProject, ITask, ITaskCategory } from "@/types/project.types";
 import { create } from "zustand";
 import { v4 as uuidv4 } from "uuid";
+import type { UpdateProjectData } from "@/components/pages/ProjectView/ProjectDetails";
+import type { ProjectCreateData } from "@/components/Dialogs/ProjectDialog";
 
 type ProjectsStore = {
   projects: IProject[];
@@ -13,7 +15,9 @@ type ProjectsStore = {
   setFilteredProjects: (projects?: IProject[]) => void;
   resetFilteredProjects: () => void;
 
+  addNewProject: (pData: ProjectCreateData) => void;
   getProjectById: (pId: IProject["id"]) => IProject | undefined;
+  updateProject: (pId: IProject["id"], pData: UpdateProjectData) => void;
   changeProjectStatus: (
     pId: IProject["id"],
     status: IProject["status"],
@@ -87,6 +91,35 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
     return get().projects.find((project) => project.id === pId);
   },
 
+  addNewProject: (pData) => {
+    set((state) => ({
+      projects: [
+        {
+          ...pData,
+          id: uuidv4(),
+          status: "Active",
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+        ...state.projects,
+      ],
+    }));
+  },
+
+  updateProject: (pId, pData) => {
+    set((state) => {
+      const updatedProjects = state.projects.map((project) => {
+        if (project.id === pId) {
+          return { ...project, ...pData, updatedAt: Date.now() };
+        } else {
+          return project;
+        }
+      });
+
+      return { projects: updatedProjects };
+    });
+  },
+
   deleteProject: (pId) => {
     set((state) => ({
       projects: state.projects.filter((project) => project.id !== pId),
@@ -96,11 +129,12 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
 
   changeProjectStatus: (pId, status) => {
     set((state) => {
-      const newProjects = state.projects.map((p) => {
-        if (p.id === pId) return { ...p, status: status };
+      const updatedProjects = state.projects.map((p) => {
+        if (p.id === pId)
+          return { ...p, status: status, updatedAt: Date.now() };
         return p;
       });
-      return { projects: newProjects };
+      return { projects: updatedProjects };
     });
     get().resetFilteredProjects();
   },
@@ -109,7 +143,7 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
 
   addNewCategory: (pId, catData) => {
     set((state) => {
-      const newProjects = state.projects.map((project) => {
+      const updatedProjects = state.projects.map((project) => {
         if (project.id === pId) {
           if (project.taskCategories) {
             return {
@@ -118,14 +152,20 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
                 ...project.taskCategories,
                 { id: uuidv4(), ...catData },
               ],
+              updatedAt: Date.now(),
+            };
+          } else {
+            return {
+              ...project,
+              taskCategories: [{ id: uuidv4(), ...catData }],
+              updatedAt: Date.now(),
             };
           }
-          return { ...project, taskCategories: [] };
         } else {
           return project;
         }
       });
-      return { projects: newProjects };
+      return { projects: updatedProjects };
     });
     get().resetFilteredProjects();
   },
@@ -142,7 +182,11 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
                 return cat;
               }
             });
-            return { ...project, taskCategories: updatedCat };
+            return {
+              ...project,
+              taskCategories: updatedCat,
+              updatedAt: Date.now(),
+            };
           } else {
             return project;
           }
@@ -163,7 +207,11 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
             const updatedCat = project.taskCategories.filter(
               (cat) => cat.id !== cId,
             );
-            return { ...project, taskCategories: updatedCat };
+            return {
+              ...project,
+              taskCategories: updatedCat,
+              updatedAt: Date.now(),
+            };
           } else {
             return project;
           }
@@ -180,7 +228,7 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
 
   toggleTask: (pId, catId, taskId) => {
     set((state) => {
-      const newProjects = state.projects.map((project) => {
+      const updatedProjects = state.projects.map((project) => {
         if (project.id === pId) {
           if (project.taskCategories) {
             const updatedCat = project.taskCategories.map((cat) => {
@@ -201,7 +249,11 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
                 return cat;
               }
             });
-            return { ...project, taskCategories: updatedCat };
+            return {
+              ...project,
+              taskCategories: updatedCat,
+              updatedAt: Date.now(),
+            };
           } else {
             return project;
           }
@@ -210,14 +262,14 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
         }
       });
 
-      return { projects: newProjects };
+      return { projects: updatedProjects };
     });
     get().resetFilteredProjects();
   },
 
   addNewTask: (pId, catId, taskData) => {
     set((state) => {
-      const newProjects = state.projects.map((project) => {
+      const updatedProjects = state.projects.map((project) => {
         if (project.id === pId) {
           if (project.taskCategories) {
             const updatedCat = project.taskCategories.map((cat) => {
@@ -231,13 +283,20 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
                     ],
                   };
                 } else {
-                  return cat;
+                  return {
+                    ...cat,
+                    tasks: [{ id: uuidv4(), completed: false, ...taskData }],
+                  };
                 }
               } else {
                 return cat;
               }
             });
-            return { ...project, taskCategories: updatedCat };
+            return {
+              ...project,
+              taskCategories: updatedCat,
+              updatedAt: Date.now(),
+            };
           } else {
             return project;
           }
@@ -246,14 +305,14 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
         }
       });
 
-      return { projects: newProjects };
+      return { projects: updatedProjects };
     });
     get().resetFilteredProjects();
   },
 
   updateTask: (pId, catId, taskId, taskData) => {
     set((state) => {
-      const newProjects = state.projects.map((project) => {
+      const updatedProjects = state.projects.map((project) => {
         if (project.id === pId) {
           if (project.taskCategories) {
             const updatedCat = project.taskCategories.map((cat) => {
@@ -274,7 +333,11 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
                 return cat;
               }
             });
-            return { ...project, taskCategories: updatedCat };
+            return {
+              ...project,
+              taskCategories: updatedCat,
+              updatedAt: Date.now(),
+            };
           } else {
             return project;
           }
@@ -283,14 +346,14 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
         }
       });
 
-      return { projects: newProjects };
+      return { projects: updatedProjects };
     });
     get().resetFilteredProjects();
   },
 
   deleteTask: (pId, catId, taskId) => {
     set((state) => {
-      const newProjects = state.projects.map((project) => {
+      const updatedProjects = state.projects.map((project) => {
         if (project.id === pId) {
           if (project.taskCategories) {
             const updatedCat = project.taskCategories.map((cat) => {
@@ -305,7 +368,11 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
                 return cat;
               }
             });
-            return { ...project, taskCategories: updatedCat };
+            return {
+              ...project,
+              taskCategories: updatedCat,
+              updatedAt: Date.now(),
+            };
           } else {
             return project;
           }
@@ -314,7 +381,7 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
         }
       });
 
-      return { projects: newProjects };
+      return { projects: updatedProjects };
     });
     get().resetFilteredProjects();
   },

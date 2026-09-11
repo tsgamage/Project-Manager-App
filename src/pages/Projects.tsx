@@ -5,15 +5,26 @@ import Header from "@/components/pages/Projects/Header";
 import { Button } from "@/components/ui/shadcn/button";
 import type { IProject } from "@/types/project.types";
 import { useProjectStore } from "@/store/project.store";
+import type { ProjectCreateData } from "@/components/Dialogs/ProjectDialog";
+import ProjectDialog from "@/components/Dialogs/ProjectDialog";
 
 export type ProjectViewType = "card" | "list";
 
 export default function ProjectPage() {
+  const [createProjectDialog, setCreateProjectDialog] = useState<{
+    open: boolean;
+    pData: ProjectCreateData | null;
+  }>({
+    open: false,
+    pData: null,
+  });
+
   const [view, setView] = useState<ProjectViewType>("card");
   const [selectedProjectIds, setSelectedProjectIds] = useState<Set<string>>(
     new Set(),
   );
 
+  const addNewProject = useProjectStore((state) => state.addNewProject);
   const filteredProjects = useProjectStore((state) => state.filteredProjects);
   const changeProjectStatus = useProjectStore(
     (state) => state.changeProjectStatus,
@@ -61,57 +72,72 @@ export default function ProjectPage() {
     visibleProjects.every((project) => selectedProjectIds.has(project.id));
 
   return (
-    <PageWrapper>
-      <div className="space-y-8 px-5 py-6 lg:px-8">
-        <Header
-          view={view}
-          onViewChange={setView}
-          selectedCount={selectedProjectIds.size}
-          allVisibleSelected={allVisibleSelected}
-          onSelectAll={selectAllVisible}
-          onClearSelection={clearSelection}
-          onBulkStatusChange={(status) =>
-            updateProjectStatus(selectedIds, status)
+    <>
+      <PageWrapper>
+        <div className="space-y-8 px-5 py-6 lg:px-8">
+          <Header
+            view={view}
+            onViewChange={setView}
+            selectedCount={selectedProjectIds.size}
+            allVisibleSelected={allVisibleSelected}
+            onSelectAll={selectAllVisible}
+            onClearSelection={clearSelection}
+            onBulkStatusChange={(status) =>
+              updateProjectStatus(selectedIds, status)
+            }
+            onBulkArchive={() => archiveProjects(selectedIds)}
+            onCreateProject={() =>
+              setCreateProjectDialog((prev) => ({ ...prev, open: true }))
+            }
+          />
+          <section
+            className={
+              view === "card"
+                ? "grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+                : "grid gap-3"
+            }
+            aria-label="Projects"
+          >
+            {visibleProjects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                view={view}
+                isSelected={selectedProjectIds.has(project.id)}
+                onSelect={toggleProjectSelection}
+                onArchive={(projectId) => archiveProjects([projectId])}
+                selectedItemCount={selectedIds.length}
+                onStatusChange={(projectId, status) =>
+                  updateProjectStatus([projectId], status)
+                }
+              />
+            ))}
+          </section>
+          <footer className="flex items-center justify-between border-t pt-4 text-xs text-muted-foreground">
+            <span>
+              Showing {visibleProjects.length} of {filteredProjects.length}{" "}
+              projects
+            </span>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" disabled>
+                Previous
+              </Button>
+              <Button variant="outline" size="sm">
+                Next
+              </Button>
+            </div>
+          </footer>
+        </div>
+      </PageWrapper>
+      {createProjectDialog.open && (
+        <ProjectDialog
+          open
+          onOpenChange={(open) =>
+            setCreateProjectDialog((prev) => ({ ...prev, open }))
           }
-          onBulkArchive={() => archiveProjects(selectedIds)}
+          onSave={addNewProject}
         />
-        <section
-          className={
-            view === "card"
-              ? "grid gap-4 md:grid-cols-2 lg:grid-cols-3"
-              : "grid gap-3"
-          }
-          aria-label="Projects"
-        >
-          {visibleProjects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              view={view}
-              isSelected={selectedProjectIds.has(project.id)}
-              onSelect={toggleProjectSelection}
-              onArchive={(projectId) => archiveProjects([projectId])}
-              selectedItemCount={selectedIds.length}
-              onStatusChange={(projectId, status) =>
-                updateProjectStatus([projectId], status)
-              }
-            />
-          ))}
-        </section>
-        <footer className="flex items-center justify-between border-t pt-4 text-xs text-muted-foreground">
-          <span>
-            Showing {visibleProjects.length} of {filteredProjects.length} projects
-          </span>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled>
-              Previous
-            </Button>
-            <Button variant="outline" size="sm">
-              Next
-            </Button>
-          </div>
-        </footer>
-      </div>
-    </PageWrapper>
+      )}
+    </>
   );
 }

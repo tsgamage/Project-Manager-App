@@ -8,33 +8,39 @@ import {
 } from "@/components/ui/shadcn/card";
 import { Input } from "@/components/ui/shadcn/input";
 import { Label } from "@/components/ui/shadcn/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/shadcn/select";
 import { Textarea } from "@/components/ui/shadcn/textarea";
+import { cn, formatDate, getBadgeClassesByStatus } from "@/lib/utils";
+import type { IProject, TProjectStatus } from "@/types/project.types";
 import { PencilIcon } from "lucide-react";
 import { useState } from "react";
 
-export default function ProjectDetails({
-  name,
-  description,
-  dueDate,
-  status,
-  onSave,
-}: {
-  name: string;
-  description: string;
-  dueDate: string;
-  status: string;
-  onSave: (
-    name: string,
-    description: string,
-    dueDate: string,
-    status: string,
-  ) => void;
-}) {
-  const [draft, setDraft] = useState({ name, description, dueDate, status });
+export type UpdateProjectData = {
+  name: IProject["name"];
+  description: IProject["description"];
+  dueDate: IProject["dueDate"];
+  status: IProject["status"];
+};
+
+interface Props {
+  project: UpdateProjectData;
+  onSave: (pData: UpdateProjectData) => void;
+}
+
+const projectStatus = ["Active", "On Hold", "Completed"] as TProjectStatus[];
+
+export default function ProjectDetails({ project, onSave }: Props) {
+  const [draft, setDraft] = useState<UpdateProjectData>(project);
   const [editing, setEditing] = useState(false);
 
   const save = () => {
-    onSave(draft.name, draft.description, draft.dueDate, draft.status);
+    onSave(draft);
     setEditing(false);
   };
 
@@ -48,9 +54,9 @@ export default function ProjectDetails({
           </p>
         </div>
         <Button
-          variant={editing ? "outline" : "default"}
+          variant={"outline"}
           size="sm"
-          onClick={() => setEditing(!editing)}
+          onClick={() => setEditing((prev) => !prev)}
         >
           {editing ? (
             "Cancel editing"
@@ -99,16 +105,38 @@ export default function ProjectDetails({
               </div>
               <div className="space-y-2">
                 <Label htmlFor="project-status">Status</Label>
-                <Input
-                  id="project-status"
+                <Select
                   value={draft.status}
-                  onChange={(event) =>
-                    setDraft({ ...draft, status: event.target.value })
+                  onValueChange={(value) =>
+                    setDraft((prev) => ({
+                      ...prev,
+                      status: value as TProjectStatus,
+                    }))
                   }
-                />
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {projectStatus.map((s) => (
+                      <SelectItem key={s} value={s}>
+                        {s}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
-            <Button onClick={save}>Save details</Button>
+            <Button
+              disabled={
+                !draft.name.trim() ||
+                !draft.description.trim() ||
+                !draft.dueDate
+              }
+              onClick={save}
+            >
+              Save details
+            </Button>
           </>
         ) : (
           <div className="space-y-7">
@@ -117,7 +145,7 @@ export default function ProjectDetails({
                 Project title
               </p>
               <h2 className="wrap-break-word text-2xl font-semibold tracking-tight">
-                {name}
+                {project.name}
               </h2>
             </div>
             <div className="space-y-2">
@@ -125,7 +153,7 @@ export default function ProjectDetails({
                 Description
               </p>
               <p className="wrap-break-word whitespace-pre-wrap text-sm leading-7 text-muted-foreground">
-                {description || "No project description yet."}
+                {project.description || "No project description yet."}
               </p>
             </div>
             <div className="grid gap-4 border-t pt-5 sm:grid-cols-2">
@@ -133,17 +161,22 @@ export default function ProjectDetails({
                 <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                   Due date
                 </p>
-                <p className="mt-2 text-sm font-medium">{dueDate}</p>
+                <p className="mt-2 text-sm font-medium">
+                  {formatDate(project.dueDate)}
+                </p>
               </div>
               <div className="rounded-lg bg-muted/30 p-4">
                 <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                   Status
                 </p>
                 <Badge
-                  className="mt-2 bg-emerald-500/15 text-emerald-500"
+                  className={cn(
+                    getBadgeClassesByStatus(project.status),
+                    "mt-2",
+                  )}
                   variant="outline"
                 >
-                  {status}
+                  {project.status}
                 </Badge>
               </div>
             </div>

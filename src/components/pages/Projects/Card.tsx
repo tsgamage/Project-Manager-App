@@ -26,7 +26,7 @@ import {
   ProgressValue,
 } from "@/components/ui/shadcn/progress";
 import { Separator } from "@/components/ui/shadcn/separator";
-import type { IProject } from "@/types/project.types";
+import type { IProject, TProjectStatus } from "@/types/project.types";
 import {
   ActivityIcon,
   ArchiveIcon,
@@ -35,8 +35,8 @@ import {
 } from "lucide-react";
 import { cn } from "cn";
 import { useNavigate } from "react-router-dom";
-import { formatDate } from "date-fns";
-import { getProgressForProject } from "@/lib/utils";
+import { formatDistanceToNow } from "date-fns";
+import { getBadgeClassesByStatus, getProgressForProject } from "@/lib/utils";
 
 interface ProjectCardProps {
   project: IProject;
@@ -46,19 +46,6 @@ interface ProjectCardProps {
   onSelect: (projectId: string) => void;
   onArchive: (projectId: string) => void;
   onStatusChange: (projectId: string, status: IProject["status"]) => void;
-}
-
-function getBadgeClasses(status: IProject["status"]) {
-  switch (status) {
-    case "Completed":
-      return "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300";
-    case "Active":
-      return "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300";
-    case "On Hold":
-      return "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300";
-    case "Archived":
-      return "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300";
-  }
 }
 
 function getProgressClasses(progress: number) {
@@ -85,7 +72,7 @@ export default function ProjectCard({
   const navigate = useNavigate();
 
   const progress = getProgressForProject(project);
-  const statusOptions = ["Active", "On Hold", "Completed"] as const;
+  const statusOptions = ["Active", "On Hold", "Completed"] as TProjectStatus[];
 
   const projectContextMenu = (
     <>
@@ -168,7 +155,7 @@ export default function ProjectCard({
 
             <div className="flex items-center justify-between gap-3">
               <Badge
-                className={getBadgeClasses(project.status)}
+                className={getBadgeClassesByStatus(project.status)}
                 variant="outline"
               >
                 {project.status}
@@ -180,7 +167,7 @@ export default function ProjectCard({
             className="flex h-full w-full flex-col gap-3 justify-between"
             draggable={false}
           >
-            <CardContent className="line-clamp-5">
+            <CardContent className={"line-clamp-5"}>
               {project.description}
             </CardContent>
             <CardFooter className="w-full flex-col justify-between gap-2">
@@ -194,7 +181,8 @@ export default function ProjectCard({
                 <ProgressValue className="text-xs" />
               </Progress>
               <p className="flex w-full justify-end text-xs text-muted-foreground">
-                Updated: {formatDate(project.updatedAt, "MM/dd/yyyy")}
+                Updated:{" "}
+                {formatDistanceToNow(project.updatedAt, { addSuffix: true })}
               </p>
             </CardFooter>
           </div>
@@ -212,7 +200,7 @@ export default function ProjectCard({
             </div>
             <div className="flex items-center gap-2">
               <Badge
-                className={getBadgeClasses(project.status)}
+                className={getBadgeClassesByStatus(project.status)}
                 variant="outline"
               >
                 {project.status}
@@ -233,7 +221,8 @@ export default function ProjectCard({
             </div>
             <div className="flex items-center gap-4 text-xs text-muted-foreground justify-end">
               <span>
-                Updated: {formatDate(project.updatedAt, "MM/dd/yyyy")}
+                Updated:{" "}
+                {formatDistanceToNow(project.updatedAt, { addSuffix: true })}
               </span>
             </div>
           </div>

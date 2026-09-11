@@ -21,6 +21,7 @@ import {
   Grid2x2Icon,
   ListIcon,
   PlusIcon,
+  RotateCcwIcon,
   SearchIcon,
   XIcon,
 } from "lucide-react";
@@ -56,6 +57,7 @@ interface HeaderProps {
   onClearSelection: () => void;
   onBulkStatusChange: (status: Exclude<IProject["status"], "Archived">) => void;
   onBulkArchive: () => void;
+  onCreateProject: () => void;
 }
 
 type ProgressFilter = "any" | "not-started" | "in-progress" | "done";
@@ -155,6 +157,7 @@ export default function Header({
   onClearSelection,
   onBulkStatusChange,
   onBulkArchive,
+  onCreateProject,
 }: HeaderProps) {
   const [inputValue, setInputValue] = useState<string>("");
   const [value] = useDebounce(inputValue, 300);
@@ -165,12 +168,14 @@ export default function Header({
     dueDate: DueDateFileter;
     sort: SortFilter;
   }
-  const [filters, setFilters] = useState<Filter>({
+  const INITIAL_FILTER_STATE: Filter = {
     status: new Set(),
     progress: "any",
     dueDate: "any",
     sort: "updated",
-  });
+  };
+
+  const [filters, setFilters] = useState<Filter>(INITIAL_FILTER_STATE);
 
   const projects = useProjectStore((state) => state.projects);
   const setFilteredProjects = useProjectStore(
@@ -210,6 +215,12 @@ export default function Header({
     setFilteredProjects(filteredProjects);
   }, [fuse, value, setFilteredProjects, filters]);
 
+  const filterAdded =
+    filters.status.size > 0 ||
+    filters.progress !== "any" ||
+    filters.dueDate !== "any" ||
+    filters.sort !== "updated";
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-5 justify-between">
@@ -246,9 +257,20 @@ export default function Header({
               >
                 <FilterIcon />
               </PopoverTrigger>
+
               <PopoverContent align="end" className="w-80">
-                <PopoverHeader className="border-b pb-3">
+                <PopoverHeader className="border-b pb-3 h-8 flex flex-row justify-between items-center">
                   <PopoverTitle>Filter projects</PopoverTitle>
+                  {filterAdded && (
+                    <Button
+                      size={"icon-sm"}
+                      variant={"outline"}
+                      title="Reset Filters"
+                      onClick={() => setFilters(INITIAL_FILTER_STATE)}
+                    >
+                      <RotateCcwIcon />
+                    </Button>
+                  )}
                 </PopoverHeader>
                 <div className="grid gap-4 pt-1">
                   <div className="grid gap-2">
@@ -378,7 +400,7 @@ export default function Header({
                 </TabsTrigger>
               </TabsList>
             </Tabs>
-            <Button>
+            <Button onClick={onCreateProject}>
               <PlusIcon />
               New Project
             </Button>

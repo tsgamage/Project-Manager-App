@@ -19,13 +19,7 @@ import Info from "@/components/pages/ProjectView/Info";
 import { Button } from "@/components/ui/shadcn/button";
 import { useProjectStore } from "@/store/project.store";
 import { APP_URLS } from "@/constant/url";
-
-const formatDate = (date: string) =>
-  new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(new Date(`${date}T00:00:00`));
+import { formatDate } from "@/lib/utils";
 
 export default function ProjectViewPage() {
   const { pId } = useParams();
@@ -36,6 +30,7 @@ export default function ProjectViewPage() {
     (state) => state.changeProjectStatus,
   );
   const onDeleteProject = useProjectStore((state) => state.deleteProject);
+  const updateProject = useProjectStore((state) => state.updateProject);
 
   const addNewCategory = useProjectStore((state) => state.addNewCategory);
   const updateCategory = useProjectStore((state) => state.updateCategory);
@@ -103,11 +98,8 @@ export default function ProjectViewPage() {
 
         <TabsContent value="details" className="mt-5">
           <ProjectDetails
-            name={project.name}
-            description={project.description}
-            dueDate={formatDate(project.dueDate)}
-            status={project.status}
-            onSave={() => {}}
+            project={project}
+            onSave={(pData) => updateProject(pId!, pData)}
           />
         </TabsContent>
 

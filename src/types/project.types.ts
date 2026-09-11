@@ -21,7 +21,7 @@ export interface IProject {
   description: string;
   dueDate: string;
   taskCategories?: ITaskCategory[];
-  createdAt: string;
-  updatedAt: string;
-  deletedAt?: string;
+  createdAt: number;
+  updatedAt: number;
+  deletedAt?: number;
 }
