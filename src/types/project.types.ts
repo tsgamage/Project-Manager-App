@@ -1,12 +1,14 @@
 export interface ITask {
-  taskName: string;
-  taskDescription?: string;
+  id: string;
+  name: string;
+  description?: string;
   dueDate?: string;
   completed: boolean;
 }
 
 export interface ITaskCategory {
-  categoryName: string;
+  id: string;
+  name: string;
   tasks?: ITask[];
 }
 

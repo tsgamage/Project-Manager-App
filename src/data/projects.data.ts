@@ -9,22 +9,42 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-10-15",
     taskCategories: [
       {
-        categoryName: "Research",
+        id: "northstar-mobile-app-category-1",
+        name: "Research",
         tasks: [
-          { taskName: "Interview beta users", completed: true },
-          { taskName: "Document primary workflows", completed: true },
+          {
+            id: "northstar-mobile-app-category-1-task-1",
+            name: "Interview beta users",
+            description:
+              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores officia similique repellat cum veniam ipsam voluptate autem omnis",
+            completed: true,
+          },
+          {
+            id: "northstar-mobile-app-category-1-task-2",
+            name: "Document primary workflows",
+            completed: true,
+          },
         ],
       },
       {
-        categoryName: "Design",
+        id: "northstar-mobile-app-category-2",
+        name: "Design",
         tasks: [
-          { taskName: "Create navigation wireframes", completed: true },
-          { taskName: "Review accessibility contrast", completed: true },
+          {
+            id: "northstar-mobile-app-category-2-task-1",
+            name: "Create navigation wireframes",
+            completed: true,
+          },
+          {
+            id: "northstar-mobile-app-category-2-task-2",
+            name: "Review accessibility contrast",
+            completed: true,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-01T09:00:00.000Z",
+    updatedAt: "2026-08-08T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -35,22 +55,40 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-09-28",
     taskCategories: [
       {
-        categoryName: "Content",
+        id: "refresh-marketing-site-category-1",
+        name: "Content",
         tasks: [
-          { taskName: "Outline new landing page", completed: false },
-          { taskName: "Approve customer case study", completed: true },
+          {
+            id: "refresh-marketing-site-category-1-task-1",
+            name: "Outline new landing page",
+            completed: false,
+          },
+          {
+            id: "refresh-marketing-site-category-1-task-2",
+            name: "Approve customer case study",
+            completed: true,
+          },
         ],
       },
       {
-        categoryName: "Engineering",
+        id: "refresh-marketing-site-category-2",
+        name: "Engineering",
         tasks: [
-          { taskName: "Set up preview deployments", completed: true },
-          { taskName: "Optimize image loading", completed: false },
+          {
+            id: "refresh-marketing-site-category-2-task-1",
+            name: "Set up preview deployments",
+            completed: true,
+          },
+          {
+            id: "refresh-marketing-site-category-2-task-2",
+            name: "Optimize image loading",
+            completed: false,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-02T09:00:00.000Z",
+    updatedAt: "2026-08-09T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -60,22 +98,40 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-11-06",
     taskCategories: [
       {
-        categoryName: "Data",
+        id: "atlas-analytics-dashboard-category-1",
+        name: "Data",
         tasks: [
-          { taskName: "Define reporting metrics", completed: true },
-          { taskName: "Validate event tracking", completed: true },
+          {
+            id: "atlas-analytics-dashboard-category-1-task-1",
+            name: "Define reporting metrics",
+            completed: true,
+          },
+          {
+            id: "atlas-analytics-dashboard-category-1-task-2",
+            name: "Validate event tracking",
+            completed: true,
+          },
         ],
       },
       {
-        categoryName: "Dashboard",
+        id: "atlas-analytics-dashboard-category-2",
+        name: "Dashboard",
         tasks: [
-          { taskName: "Build revenue overview", completed: false },
-          { taskName: "Add date range filters", completed: false },
+          {
+            id: "atlas-analytics-dashboard-category-2-task-1",
+            name: "Build revenue overview",
+            completed: false,
+          },
+          {
+            id: "atlas-analytics-dashboard-category-2-task-2",
+            name: "Add date range filters",
+            completed: false,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-03T09:00:00.000Z",
+    updatedAt: "2026-08-10T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -85,22 +141,40 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-12-12",
     taskCategories: [
       {
-        categoryName: "Foundations",
+        id: "harbor-design-system-category-1",
+        name: "Foundations",
         tasks: [
-          { taskName: "Finalize color tokens", completed: true },
-          { taskName: "Document typography scale", completed: false },
+          {
+            id: "harbor-design-system-category-1-task-1",
+            name: "Finalize color tokens",
+            completed: true,
+          },
+          {
+            id: "harbor-design-system-category-1-task-2",
+            name: "Document typography scale",
+            completed: false,
+          },
         ],
       },
       {
-        categoryName: "Components",
+        id: "harbor-design-system-category-2",
+        name: "Components",
         tasks: [
-          { taskName: "Publish button variants", completed: true },
-          { taskName: "Build form field patterns", completed: false },
+          {
+            id: "harbor-design-system-category-2-task-1",
+            name: "Publish button variants",
+            completed: true,
+          },
+          {
+            id: "harbor-design-system-category-2-task-2",
+            name: "Build form field patterns",
+            completed: false,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-04T09:00:00.000Z",
+    updatedAt: "2026-08-11T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -110,22 +184,40 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-10-30",
     taskCategories: [
       {
-        categoryName: "Account",
+        id: "pioneer-customer-portal-category-1",
+        name: "Account",
         tasks: [
-          { taskName: "Map profile settings", completed: false },
-          { taskName: "Implement team invitations", completed: true },
+          {
+            id: "pioneer-customer-portal-category-1-task-1",
+            name: "Map profile settings",
+            completed: false,
+          },
+          {
+            id: "pioneer-customer-portal-category-1-task-2",
+            name: "Implement team invitations",
+            completed: true,
+          },
         ],
       },
       {
-        categoryName: "Support",
+        id: "pioneer-customer-portal-category-2",
+        name: "Support",
         tasks: [
-          { taskName: "Design ticket history", completed: false },
-          { taskName: "Connect help center search", completed: true },
+          {
+            id: "pioneer-customer-portal-category-2-task-1",
+            name: "Design ticket history",
+            completed: false,
+          },
+          {
+            id: "pioneer-customer-portal-category-2-task-2",
+            name: "Connect help center search",
+            completed: true,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-05T09:00:00.000Z",
+    updatedAt: "2026-08-12T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -135,22 +227,40 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-09-21",
     taskCategories: [
       {
-        categoryName: "Planning",
+        id: "cedar-inventory-planner-category-1",
+        name: "Planning",
         tasks: [
-          { taskName: "Model reorder thresholds", completed: true },
-          { taskName: "Add seasonal adjustments", completed: false },
+          {
+            id: "cedar-inventory-planner-category-1-task-1",
+            name: "Model reorder thresholds",
+            completed: true,
+          },
+          {
+            id: "cedar-inventory-planner-category-1-task-2",
+            name: "Add seasonal adjustments",
+            completed: false,
+          },
         ],
       },
       {
-        categoryName: "Operations",
+        id: "cedar-inventory-planner-category-2",
+        name: "Operations",
         tasks: [
-          { taskName: "Import warehouse locations", completed: true },
-          { taskName: "Test low-stock alerts", completed: true },
+          {
+            id: "cedar-inventory-planner-category-2-task-1",
+            name: "Import warehouse locations",
+            completed: true,
+          },
+          {
+            id: "cedar-inventory-planner-category-2-task-2",
+            name: "Test low-stock alerts",
+            completed: true,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-06T09:00:00.000Z",
+    updatedAt: "2026-08-13T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -160,22 +270,32 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-11-20",
     taskCategories: [
       {
-        categoryName: "Payments",
+        id: "seed-id-1",
+        name: "Payments",
         tasks: [
-          { taskName: "Integrate payment provider", completed: false },
-          { taskName: "Handle failed payments", completed: false },
+          {
+            id: "seed-id-2",
+            name: "Integrate payment provider",
+            completed: false,
+          },
+          { id: "seed-id-3", name: "Handle failed payments", completed: false },
         ],
       },
       {
-        categoryName: "Invoices",
+        id: "seed-id-4",
+        name: "Invoices",
         tasks: [
-          { taskName: "Create invoice templates", completed: true },
-          { taskName: "Add invoice download", completed: false },
+          {
+            id: "seed-id-5",
+            name: "Create invoice templates",
+            completed: true,
+          },
+          { id: "seed-id-6", name: "Add invoice download", completed: false },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-05T09:00:00.000Z",
+    updatedAt: "2026-08-12T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -185,22 +305,28 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-10-08",
     taskCategories: [
       {
-        categoryName: "Journey",
+        id: "seed-id-7",
+        name: "Journey",
         tasks: [
-          { taskName: "Map first-session steps", completed: true },
-          { taskName: "Write welcome messages", completed: true },
+          { id: "seed-id-8", name: "Map first-session steps", completed: true },
+          { id: "seed-id-9", name: "Write welcome messages", completed: true },
         ],
       },
       {
-        categoryName: "Activation",
+        id: "seed-id-10",
+        name: "Activation",
         tasks: [
-          { taskName: "Add setup checklist", completed: false },
-          { taskName: "Measure activation events", completed: false },
+          { id: "seed-id-11", name: "Add setup checklist", completed: false },
+          {
+            id: "seed-id-12",
+            name: "Measure activation events",
+            completed: false,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-06T09:00:00.000Z",
+    updatedAt: "2026-08-13T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -210,22 +336,32 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-09-18",
     taskCategories: [
       {
-        categoryName: "Formats",
+        id: "seed-id-13",
+        name: "Formats",
         tasks: [
-          { taskName: "Support CSV exports", completed: true },
-          { taskName: "Add PDF export", completed: false },
+          { id: "seed-id-14", name: "Support CSV exports", completed: true },
+          { id: "seed-id-15", name: "Add PDF export", completed: false },
         ],
       },
       {
-        categoryName: "Scheduling",
+        id: "seed-id-16",
+        name: "Scheduling",
         tasks: [
-          { taskName: "Design recurring reports", completed: false },
-          { taskName: "Add delivery preferences", completed: true },
+          {
+            id: "seed-id-17",
+            name: "Design recurring reports",
+            completed: false,
+          },
+          {
+            id: "seed-id-18",
+            name: "Add delivery preferences",
+            completed: true,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-07T09:00:00.000Z",
+    updatedAt: "2026-08-14T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -235,22 +371,36 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-12-04",
     taskCategories: [
       {
-        categoryName: "Messaging",
+        id: "seed-id-19",
+        name: "Messaging",
         tasks: [
-          { taskName: "Define notification priorities", completed: true },
-          { taskName: "Create message templates", completed: false },
+          {
+            id: "seed-id-20",
+            name: "Define notification priorities",
+            completed: true,
+          },
+          {
+            id: "seed-id-21",
+            name: "Create message templates",
+            completed: false,
+          },
         ],
       },
       {
-        categoryName: "Preferences",
+        id: "seed-id-22",
+        name: "Preferences",
         tasks: [
-          { taskName: "Build preference controls", completed: false },
-          { taskName: "Add quiet hours", completed: true },
+          {
+            id: "seed-id-23",
+            name: "Build preference controls",
+            completed: false,
+          },
+          { id: "seed-id-24", name: "Add quiet hours", completed: true },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-08T09:00:00.000Z",
+    updatedAt: "2026-08-15T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -261,22 +411,28 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2027-01-15",
     taskCategories: [
       {
-        categoryName: "Collaboration",
+        id: "seed-id-25",
+        name: "Collaboration",
         tasks: [
-          { taskName: "Add threaded comments", completed: false },
-          { taskName: "Implement mentions", completed: true },
+          { id: "seed-id-26", name: "Add threaded comments", completed: false },
+          { id: "seed-id-27", name: "Implement mentions", completed: true },
         ],
       },
       {
-        categoryName: "Permissions",
+        id: "seed-id-28",
+        name: "Permissions",
         tasks: [
-          { taskName: "Define workspace roles", completed: true },
-          { taskName: "Audit permission changes", completed: false },
+          { id: "seed-id-29", name: "Define workspace roles", completed: true },
+          {
+            id: "seed-id-30",
+            name: "Audit permission changes",
+            completed: false,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-09T09:00:00.000Z",
+    updatedAt: "2026-08-16T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -286,22 +442,36 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-10-22",
     taskCategories: [
       {
-        categoryName: "Indexing",
+        id: "seed-id-31",
+        name: "Indexing",
         tasks: [
-          { taskName: "Review searchable fields", completed: true },
-          { taskName: "Tune indexing frequency", completed: false },
+          {
+            id: "seed-id-32",
+            name: "Review searchable fields",
+            completed: true,
+          },
+          {
+            id: "seed-id-33",
+            name: "Tune indexing frequency",
+            completed: false,
+          },
         ],
       },
       {
-        categoryName: "Relevance",
+        id: "seed-id-34",
+        name: "Relevance",
         tasks: [
-          { taskName: "Add recent-item boosting", completed: false },
-          { taskName: "Test typo tolerance", completed: true },
+          {
+            id: "seed-id-35",
+            name: "Add recent-item boosting",
+            completed: false,
+          },
+          { id: "seed-id-36", name: "Test typo tolerance", completed: true },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-10T09:00:00.000Z",
+    updatedAt: "2026-08-17T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -311,22 +481,36 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-11-13",
     taskCategories: [
       {
-        categoryName: "Calendar",
+        id: "seed-id-37",
+        name: "Calendar",
         tasks: [
-          { taskName: "Build weekly calendar view", completed: true },
-          { taskName: "Handle timezone display", completed: false },
+          {
+            id: "seed-id-38",
+            name: "Build weekly calendar view",
+            completed: true,
+          },
+          {
+            id: "seed-id-39",
+            name: "Handle timezone display",
+            completed: false,
+          },
         ],
       },
       {
-        categoryName: "Resources",
+        id: "seed-id-40",
+        name: "Resources",
         tasks: [
-          { taskName: "Add room availability", completed: false },
-          { taskName: "Prevent double bookings", completed: true },
+          { id: "seed-id-41", name: "Add room availability", completed: false },
+          {
+            id: "seed-id-42",
+            name: "Prevent double bookings",
+            completed: true,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-11T09:00:00.000Z",
+    updatedAt: "2026-08-18T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -336,22 +520,36 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-09-25",
     taskCategories: [
       {
-        categoryName: "Automation",
+        id: "seed-id-43",
+        name: "Automation",
         tasks: [
-          { taskName: "Create release pipeline", completed: true },
-          { taskName: "Add rollback workflow", completed: false },
+          {
+            id: "seed-id-44",
+            name: "Create release pipeline",
+            completed: true,
+          },
+          { id: "seed-id-45", name: "Add rollback workflow", completed: false },
         ],
       },
       {
-        categoryName: "Quality",
+        id: "seed-id-46",
+        name: "Quality",
         tasks: [
-          { taskName: "Define release checklist", completed: true },
-          { taskName: "Schedule regression testing", completed: true },
+          {
+            id: "seed-id-47",
+            name: "Define release checklist",
+            completed: true,
+          },
+          {
+            id: "seed-id-48",
+            name: "Schedule regression testing",
+            completed: true,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-12T09:00:00.000Z",
+    updatedAt: "2026-08-19T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -362,22 +560,32 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-12-18",
     taskCategories: [
       {
-        categoryName: "Collection",
+        id: "seed-id-49",
+        name: "Collection",
         tasks: [
-          { taskName: "Select feedback channels", completed: false },
-          { taskName: "Create feedback form", completed: true },
+          {
+            id: "seed-id-50",
+            name: "Select feedback channels",
+            completed: false,
+          },
+          { id: "seed-id-51", name: "Create feedback form", completed: true },
         ],
       },
       {
-        categoryName: "Analysis",
+        id: "seed-id-52",
+        name: "Analysis",
         tasks: [
-          { taskName: "Define tagging taxonomy", completed: false },
-          { taskName: "Plan monthly review", completed: false },
+          {
+            id: "seed-id-53",
+            name: "Define tagging taxonomy",
+            completed: false,
+          },
+          { id: "seed-id-54", name: "Plan monthly review", completed: false },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-13T09:00:00.000Z",
+    updatedAt: "2026-08-20T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -388,22 +596,40 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2027-02-05",
     taskCategories: [
       {
-        categoryName: "API",
+        id: "seed-id-55",
+        name: "API",
         tasks: [
-          { taskName: "Version public endpoints", completed: true },
-          { taskName: "Add rate limit headers", completed: false },
+          {
+            id: "seed-id-56",
+            name: "Version public endpoints",
+            completed: true,
+          },
+          {
+            id: "seed-id-57",
+            name: "Add rate limit headers",
+            completed: false,
+          },
         ],
       },
       {
-        categoryName: "Documentation",
+        id: "seed-id-58",
+        name: "Documentation",
         tasks: [
-          { taskName: "Write authentication guide", completed: true },
-          { taskName: "Publish request examples", completed: false },
+          {
+            id: "seed-id-59",
+            name: "Write authentication guide",
+            completed: true,
+          },
+          {
+            id: "seed-id-60",
+            name: "Publish request examples",
+            completed: false,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-14T09:00:00.000Z",
+    updatedAt: "2026-08-21T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -413,22 +639,36 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-10-02",
     taskCategories: [
       {
-        categoryName: "Assessment",
+        id: "seed-id-61",
+        name: "Assessment",
         tasks: [
-          { taskName: "Inventory sensitive data", completed: true },
-          { taskName: "Review access boundaries", completed: false },
+          {
+            id: "seed-id-62",
+            name: "Inventory sensitive data",
+            completed: true,
+          },
+          {
+            id: "seed-id-63",
+            name: "Review access boundaries",
+            completed: false,
+          },
         ],
       },
       {
-        categoryName: "Remediation",
+        id: "seed-id-64",
+        name: "Remediation",
         tasks: [
-          { taskName: "Patch dependency findings", completed: true },
-          { taskName: "Verify audit logging", completed: false },
+          {
+            id: "seed-id-65",
+            name: "Patch dependency findings",
+            completed: true,
+          },
+          { id: "seed-id-66", name: "Verify audit logging", completed: false },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-15T09:00:00.000Z",
+    updatedAt: "2026-08-22T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -438,22 +678,36 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-11-27",
     taskCategories: [
       {
-        categoryName: "Information Architecture",
+        id: "seed-id-67",
+        name: "Information Architecture",
         tasks: [
-          { taskName: "Group articles by topic", completed: true },
-          { taskName: "Define article metadata", completed: false },
+          {
+            id: "seed-id-68",
+            name: "Group articles by topic",
+            completed: true,
+          },
+          {
+            id: "seed-id-69",
+            name: "Define article metadata",
+            completed: false,
+          },
         ],
       },
       {
-        categoryName: "Publishing",
+        id: "seed-id-70",
+        name: "Publishing",
         tasks: [
-          { taskName: "Migrate top articles", completed: false },
-          { taskName: "Set up review reminders", completed: true },
+          { id: "seed-id-71", name: "Migrate top articles", completed: false },
+          {
+            id: "seed-id-72",
+            name: "Set up review reminders",
+            completed: true,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-16T09:00:00.000Z",
+    updatedAt: "2026-08-23T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -463,22 +717,36 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2027-01-29",
     taskCategories: [
       {
-        categoryName: "Instrumentation",
+        id: "seed-id-73",
+        name: "Instrumentation",
         tasks: [
-          { taskName: "Audit key user events", completed: false },
-          { taskName: "Add feature adoption events", completed: true },
+          { id: "seed-id-74", name: "Audit key user events", completed: false },
+          {
+            id: "seed-id-75",
+            name: "Add feature adoption events",
+            completed: true,
+          },
         ],
       },
       {
-        categoryName: "Insights",
+        id: "seed-id-76",
+        name: "Insights",
         tasks: [
-          { taskName: "Create adoption segments", completed: true },
-          { taskName: "Build weekly insight email", completed: false },
+          {
+            id: "seed-id-77",
+            name: "Create adoption segments",
+            completed: true,
+          },
+          {
+            id: "seed-id-78",
+            name: "Build weekly insight email",
+            completed: false,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-17T09:00:00.000Z",
+    updatedAt: "2026-08-24T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -488,22 +756,36 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2026-10-16",
     taskCategories: [
       {
-        categoryName: "Preparation",
+        id: "seed-id-79",
+        name: "Preparation",
         tasks: [
-          { taskName: "Inventory legacy folders", completed: true },
-          { taskName: "Map document ownership", completed: true },
+          {
+            id: "seed-id-80",
+            name: "Inventory legacy folders",
+            completed: true,
+          },
+          { id: "seed-id-81", name: "Map document ownership", completed: true },
         ],
       },
       {
-        categoryName: "Migration",
+        id: "seed-id-82",
+        name: "Migration",
         tasks: [
-          { taskName: "Migrate priority folders", completed: false },
-          { taskName: "Verify document permissions", completed: false },
+          {
+            id: "seed-id-83",
+            name: "Migrate priority folders",
+            completed: false,
+          },
+          {
+            id: "seed-id-84",
+            name: "Verify document permissions",
+            completed: false,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-18T09:00:00.000Z",
+    updatedAt: "2026-08-25T14:30:00.000Z",
     status: "Active",
   },
   {
@@ -514,22 +796,40 @@ export const DUMMY_PROJETCS: IProject[] = [
     dueDate: "2027-02-19",
     taskCategories: [
       {
-        categoryName: "Profiling",
+        id: "seed-id-85",
+        name: "Profiling",
         tasks: [
-          { taskName: "Capture baseline metrics", completed: true },
-          { taskName: "Identify slowest screens", completed: false },
+          {
+            id: "seed-id-86",
+            name: "Capture baseline metrics",
+            completed: true,
+          },
+          {
+            id: "seed-id-87",
+            name: "Identify slowest screens",
+            completed: false,
+          },
         ],
       },
       {
-        categoryName: "Optimization",
+        id: "seed-id-88",
+        name: "Optimization",
         tasks: [
-          { taskName: "Reduce initial bundle size", completed: false },
-          { taskName: "Optimize database queries", completed: true },
+          {
+            id: "seed-id-89",
+            name: "Reduce initial bundle size",
+            completed: false,
+          },
+          {
+            id: "seed-id-90",
+            name: "Optimize database queries",
+            completed: true,
+          },
         ],
       },
     ],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: "2026-08-19T09:00:00.000Z",
+    updatedAt: "2026-08-26T14:30:00.000Z",
     status: "Active",
   },
 ];

@@ -30,6 +30,7 @@ import type { IProject } from "@/types/project.types";
 import { ArchiveIcon, EditIcon, InfoIcon, SquareCheckIcon } from "lucide-react";
 import { cn } from "cn";
 import { useNavigate } from "react-router-dom";
+import { formatDate } from "date-fns";
 
 interface ProjectCardProps {
   project: IProject;
@@ -193,7 +194,7 @@ export default function ProjectCard({
             <CardContent className="line-clamp-5">
               {project.description}
             </CardContent>
-            <CardFooter className="w-full flex-col justify-between">
+            <CardFooter className="w-full flex-col justify-between gap-2">
               <Progress
                 value={progress}
                 className={cn("w-full", getProgressClasses(progress))}
@@ -204,7 +205,7 @@ export default function ProjectCard({
                 <ProgressValue className="text-xs" />
               </Progress>
               <p className="flex w-full justify-end text-xs text-muted-foreground">
-                Updated {project.updatedAt}
+                Updated: {formatDate(project.updatedAt, "MM/dd/yyyy")}
               </p>
             </CardFooter>
           </div>
@@ -242,7 +243,9 @@ export default function ProjectCard({
               </Progress>
             </div>
             <div className="flex items-center gap-4 text-xs text-muted-foreground justify-end">
-              <span>Updated {project.updatedAt}</span>
+              <span>
+                Updated: {formatDate(project.updatedAt, "MM/dd/yyyy")}
+              </span>
             </div>
           </div>
         </>
