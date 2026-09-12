@@ -437,6 +437,7 @@ export const DUMMY_PROJETCS: IProject[] = [
   },
   {
     id: "quartz-search-refresh",
+    pinned: true,
     name: "Quartz Search Refresh",
     description: "Improve discovery across documents, tasks, and projects.",
     dueDate: "2026-10-22",
@@ -712,6 +713,7 @@ export const DUMMY_PROJETCS: IProject[] = [
   },
   {
     id: "solstice-usage-insights",
+    pinned: true,
     name: "Solstice Usage Insights",
     description: "Turn product usage patterns into actionable team insights.",
     dueDate: "2027-01-29",

@@ -4,7 +4,9 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/shadcn/dropdown-menu";
 import {
@@ -16,25 +18,32 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/shadcn/sidebar";
+import { useProjectStore } from "@/store/project.store";
+import type { IProject, TProjectStatus } from "@/types/project.types";
 import {
   MoreHorizontalIcon,
   PinOffIcon,
-  ExternalLinkIcon,
-  EditIcon,
   PinIcon,
+  ActivityIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+
+const statusOptions = ["Active", "On Hold", "Completed"] as TProjectStatus[];
 
 export function NavProjects({
   projects,
 }: {
   projects: {
-    name: string;
+    id: IProject["id"];
+    name: IProject["name"];
     url: string;
-    icon: React.ReactNode;
   }[];
 }) {
   const { isMobile } = useSidebar();
+
+  const onStatusChange = useProjectStore((state) => state.changeProjectStatus);
+  const unpinProject = useProjectStore((state) => state.unpinProject);
+
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Pinned Projects</SidebarGroupLabel>
@@ -44,7 +53,7 @@ export function NavProjects({
             <SidebarMenuButton render={<Link to={item.url} />}>
               {/* {item.icon} */}
               <PinIcon className="h-4 w-4 text-muted-foreground" />
-              <span>{item.name}</span>
+              <span title={item.name}>{item.name}</span>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger
@@ -63,16 +72,23 @@ export function NavProjects({
                 side={isMobile ? "bottom" : "right"}
                 align={isMobile ? "end" : "start"}
               >
-                <DropdownMenuItem>
-                  <ExternalLinkIcon className="text-muted-foreground" />
-                  <span>View Tasks</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <EditIcon className="text-muted-foreground" />
-                  <span>Edit Info</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    <ActivityIcon />
+                    Change Status
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    {statusOptions.map((status) => (
+                      <DropdownMenuItem
+                        key={status}
+                        onClick={() => onStatusChange(item.id, status)}
+                      >
+                        {status}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+                <DropdownMenuItem onClick={() => unpinProject(item.id)}>
                   <PinOffIcon className="text-muted-foreground" />
                   <span>Unpin Project</span>
                 </DropdownMenuItem>

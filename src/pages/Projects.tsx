@@ -8,10 +8,12 @@ import type { ProjectCreateData } from "@/components/Dialogs/ProjectDialog";
 import ProjectDialog from "@/components/Dialogs/ProjectDialog";
 import { ProjectPagination } from "@/components/ui/project-pagination";
 import { Separator } from "@/components/ui/shadcn/separator";
+import { ErrorPinningDialog } from "@/components/Dialogs/error-pinning-dialog";
 
 export type ProjectViewType = "card" | "list";
 
 export default function ProjectPage() {
+  const [pinningError, setPinningError] = useState(false);
   const [createProjectDialog, setCreateProjectDialog] = useState<{
     open: boolean;
     pData: ProjectCreateData | null;
@@ -30,6 +32,8 @@ export default function ProjectPage() {
   const changeProjectStatus = useProjectStore(
     (state) => state.changeProjectStatus,
   );
+  const pinProject = useProjectStore((state) => state.pinProject);
+  const unpinProject = useProjectStore((state) => state.unpinProject);
 
   const visibleProjects = useMemo(
     () => filteredProjects.filter((project) => project.status !== "Archived"),
@@ -111,6 +115,11 @@ export default function ProjectPage() {
                 onStatusChange={(projectId, status) =>
                   updateProjectStatus([projectId], status)
                 }
+                onPin={(pId) => {
+                  const isSuccess = pinProject(pId);
+                  setPinningError(!isSuccess);
+                }}
+                onUnpin={unpinProject}
               />
             ))}
           </section>
@@ -142,6 +151,8 @@ export default function ProjectPage() {
           onSave={addNewProject}
         />
       )}
+
+      <ErrorPinningDialog open={pinningError} onOpenChange={setPinningError} />
     </>
   );
 }

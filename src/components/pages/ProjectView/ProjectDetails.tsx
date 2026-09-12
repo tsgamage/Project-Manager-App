@@ -144,15 +144,15 @@ export default function ProjectDetails({ project, onSave }: Props) {
               <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                 Project title
               </p>
-              <h2 className="wrap-break-word text-2xl font-semibold tracking-tight">
+              <h2 className="wrap-break-word text-2xl font-semibold tracking-tight select-text">
                 {project.name}
               </h2>
             </div>
             <div className="space-y-2">
-              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground ">
                 Description
               </p>
-              <p className="wrap-break-word whitespace-pre-wrap text-sm leading-7 text-muted-foreground">
+              <p className="wrap-break-word whitespace-pre-wrap text-sm leading-7 text-muted-foreground select-text">
                 {project.description || "No project description yet."}
               </p>
             </div>
@@ -161,7 +161,7 @@ export default function ProjectDetails({ project, onSave }: Props) {
                 <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                   Due date
                 </p>
-                <p className="mt-2 text-sm font-medium">
+                <p className="mt-2 text-sm font-medium select-text">
                   {formatDate(project.dueDate)}
                 </p>
               </div>

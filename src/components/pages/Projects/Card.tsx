@@ -31,6 +31,8 @@ import {
   ActivityIcon,
   ArchiveIcon,
   InfoIcon,
+  PinIcon,
+  PinOffIcon,
   SquareCheckIcon,
 } from "lucide-react";
 import { cn } from "cn";
@@ -46,6 +48,8 @@ interface ProjectCardProps {
   onSelect: (projectId: string) => void;
   onArchive: (projectId: string) => void;
   onStatusChange: (projectId: string, status: IProject["status"]) => void;
+  onPin: (projectId: string) => void;
+  onUnpin: (projectId: string) => void;
 }
 
 function getProgressClasses(progress: number) {
@@ -68,6 +72,8 @@ export default function ProjectCard({
   onSelect,
   onArchive,
   onStatusChange,
+  onPin,
+  onUnpin,
 }: ProjectCardProps) {
   const navigate = useNavigate();
 
@@ -96,6 +102,14 @@ export default function ProjectCard({
         <ContextMenuItem onClick={() => onSelect(project.id)}>
           <SquareCheckIcon />
           {isSelected ? "Deselect" : "Select"}
+        </ContextMenuItem>
+        <ContextMenuItem
+          onClick={() =>
+            project.pinned ? onUnpin(project.id) : onPin(project.id)
+          }
+        >
+          {project.pinned ? <PinOffIcon /> : <PinIcon />}
+          {project.pinned ? "Unpin" : "Pin on sidebar"}
         </ContextMenuItem>
         <ContextMenuItem>
           <InfoIcon />

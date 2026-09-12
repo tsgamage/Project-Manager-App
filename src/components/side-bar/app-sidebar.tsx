@@ -16,9 +16,6 @@ import {
 } from "@/components/ui/shadcn/sidebar";
 import {
   Settings2Icon,
-  FrameIcon,
-  PieChartIcon,
-  MapIcon,
   LayersIcon,
   CircleCheckBigIcon,
   ChartNoAxesCombinedIcon,
@@ -59,11 +56,6 @@ const data = {
       icon: <BoxIcon />,
     },
   ],
-  pinnedProjects: [
-    { name: "Design Engineering", url: "#", icon: <FrameIcon /> },
-    { name: "Sales & Marketing", url: "#", icon: <PieChartIcon /> },
-    { name: "Travel", url: "#", icon: <MapIcon /> },
-  ],
   navSecondary: [
     { title: "Archive", url: "/archive", icon: <ArchiveIcon /> },
     { title: "Settings", url: "/settings", icon: <Settings2Icon /> },
@@ -72,6 +64,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const projects = useProjectStore((state) => state.projects);
+
   const navMain = data.navMain.map((item) => {
     if (item.title === "Projects") {
       return {
@@ -83,6 +76,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       };
     } else return item;
   });
+
+  const pinnedProjects = projects
+    .filter((p) => p.pinned)
+    .map((p) => ({ id: p.id, name: p.name, url: `/project/${p.id}` }));
 
   return (
     <Sidebar variant="inset" {...props}>
@@ -104,8 +101,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={navMain} />
       </SidebarContent>
-      <SidebarFooter className="flex gap-0">
-        <NavProjects projects={data.pinnedProjects} />
+      <SidebarFooter className="flex gap-0 pt-0">
+        {pinnedProjects?.length > 0 && (
+          <NavProjects projects={pinnedProjects} />
+        )}
         <Separator />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarFooter>

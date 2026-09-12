@@ -5,6 +5,7 @@ import { create } from "zustand";
 import { v4 as uuidv4 } from "uuid";
 import type { UpdateProjectData } from "@/components/pages/ProjectView/ProjectDetails";
 import type { ProjectCreateData } from "@/components/Dialogs/ProjectDialog";
+import { APP_DATA } from "@/constant/constants";
 
 type ProjectsStore = {
   projects: IProject[];
@@ -23,6 +24,9 @@ type ProjectsStore = {
     status: IProject["status"],
   ) => void;
   deleteProject: (pId: IProject["id"]) => void;
+
+  pinProject: (pId: IProject["id"]) => boolean;
+  unpinProject: (pId: IProject["id"]) => void;
 
   addNewCategory: (
     pId: IProject["id"],
@@ -137,6 +141,41 @@ export const useProjectStore = create<ProjectsStore>((set, get) => ({
       return { projects: updatedProjects };
     });
     get().resetFilteredProjects();
+  },
+
+  pinProject: (pId) => {
+    let success = false;
+    set((state) => {
+      const pinnedCount = state.projects.filter((p) => p.pinned).length;
+      if (pinnedCount < APP_DATA.itemPinLimit) {
+        const updatedProjects = state.projects.map((project) => {
+          if (project.id === pId) {
+            return { ...project, pinned: true };
+          } else {
+            return project;
+          }
+        });
+        success = true;
+        return { projects: updatedProjects };
+      } else {
+        success = false;
+        return { projects: state.projects };
+      }
+    });
+    return success;
+  },
+
+  unpinProject: (pId) => {
+    set((state) => {
+      const updatedProjects = state.projects.map((project) => {
+        if (project.id === pId) {
+          return { ...project, pinned: false };
+        } else {
+          return project;
+        }
+      });
+      return { projects: updatedProjects };
+    });
   },
 
   // Category Related methods
