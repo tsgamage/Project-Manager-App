@@ -1,4 +1,4 @@
-import type { ITask } from "@/types/project.types";
+import type { ITask, TTaskPriority } from "@/types/project.types";
 import { useState } from "react";
 import {
   Dialog,
@@ -12,6 +12,13 @@ import { Label } from "../ui/shadcn/label";
 import { Input } from "../ui/shadcn/input";
 import { Textarea } from "../ui/shadcn/textarea";
 import { Button } from "../ui/shadcn/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/shadcn/select";
 
 interface Props {
   open: boolean;
@@ -32,6 +39,7 @@ export default function TaskDialog({
     name: task?.name ?? "",
     description: task?.description ?? "",
     dueDate: task?.dueDate ?? "",
+    priority: (task?.priority ?? "Medium") as TTaskPriority,
   });
 
   return (
@@ -76,6 +84,24 @@ export default function TaskDialog({
                 setDraft({ ...draft, dueDate: event.target.value })
               }
             />
+          </div>
+          <div className="space-y-2">
+            <Label>Priority</Label>
+            <Select
+              value={draft.priority}
+              onValueChange={(priority) =>
+                setDraft({ ...draft, priority: priority as TTaskPriority })
+              }
+            >
+              <SelectTrigger aria-label="Task priority" className={"w-full"}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="High">High</SelectItem>
+                <SelectItem value="Medium">Medium</SelectItem>
+                <SelectItem value="Low">Low</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <DialogFooter>

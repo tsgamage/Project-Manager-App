@@ -8,16 +8,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/shadcn/card";
-import { Checkbox } from "@/components/ui/shadcn/checkbox";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/shadcn/collapsible";
-import type { StrictOmit } from "@/lib/utils";
+import { cn, type StrictOmit } from "@/lib/utils";
 import type { ITask, ITaskCategory } from "@/types/project.types";
 import {
-  CalendarDaysIcon,
   ChevronDownIcon,
   CirclePlusIcon,
   PencilIcon,
@@ -25,6 +23,10 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import { useState } from "react";
+import TaskCard from "./TaskCard";
+import { Separator } from "@/components/ui/shadcn/separator";
+import TaskCategoryNotFound from "@/components/Not Found/TaskCategoryNotFound";
+import TaskNotFound from "@/components/Not Found/TaskNotFound";
 
 type DeleteDialogTypes = "task" | "category";
 function getDeleteDialogTexts(type: DeleteDialogTypes) {
@@ -112,136 +114,103 @@ export default function Tasks({
           <CirclePlusIcon /> Add category
         </Button>
       </div>
-      {taskCategories.map((category) => (
-        <Collapsible key={category.id} defaultOpen>
-          <Card className="min-w-0 max-w-full">
-            <CardHeader className="flex grid-cols-[1fr_auto] items-center gap-3 border-b">
-              <CollapsibleTrigger className="flex min-w-0 items-center gap-2 text-left">
-                <ChevronDownIcon className="size-4 shrink-0 transition-transform data-closed:-rotate-90" />
-                <div className="min-w-0">
-                  <CardTitle className="truncate">{category.name}</CardTitle>
-                  <p className="text-xs text-muted-foreground">
-                    {category.tasks?.length}
-                    {category.tasks?.length === 1 ? "task" : "tasks"}
-                  </p>
-                </div>
-              </CollapsibleTrigger>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() =>
-                  setTaskDialog({
-                    open: true,
-                    category: category,
-                    task: null,
-                    type: "new",
-                  })
-                }
-              >
-                <PlusIcon /> Add task
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() =>
-                  setCategoryDialog({
-                    open: true,
-                    type: "edit",
-                    category: category,
-                  })
-                }
-              >
-                <PencilIcon />
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() =>
-                  setDeleteDialog({
-                    open: true,
-                    type: "category",
-                    id: { catId: category.id, taskId: null },
-                  })
-                }
-              >
-                <Trash2Icon />
-              </Button>
-            </CardHeader>
-            <CollapsibleContent>
-              <CardContent className="min-w-0 max-w-full p-0">
-                {category.tasks?.length === 0 ? (
-                  <p className="px-5 py-6 text-sm text-muted-foreground">
-                    No tasks in this category yet.
-                  </p>
-                ) : (
-                  category.tasks?.map((task) => (
-                    <div
-                      key={task.id}
-                      className="flex min-w-0 max-w-full flex-col gap-3 overflow-hidden border-b p-4 last:border-b-0 sm:flex-row sm:items-start"
-                    >
-                      <Checkbox
-                        checked={task.completed}
-                        onCheckedChange={() =>
-                          onToggleTask(category.id, task.id)
+      {taskCategories.length > 0 ? (
+        taskCategories.map((category) => (
+          <Collapsible key={category.id} defaultOpen>
+            <Card className="min-w-0 max-w-full">
+              <CardHeader className="flex grid-cols-[1fr_auto] items-center gap-3">
+                <CollapsibleTrigger className="flex min-w-0 items-center gap-2 text-left">
+                  <ChevronDownIcon className="size-4 shrink-0 transition-transform data-closed:-rotate-90" />
+                  <div className="min-w-0">
+                    <CardTitle className="truncate">{category.name}</CardTitle>
+                    <p className="text-xs text-muted-foreground">
+                      {category.tasks?.length}
+                      {category.tasks?.length === 1 ? "task" : "tasks"}
+                    </p>
+                  </div>
+                </CollapsibleTrigger>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    setTaskDialog({
+                      open: true,
+                      category: category,
+                      task: null,
+                      type: "new",
+                    })
+                  }
+                >
+                  <PlusIcon /> Add task
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() =>
+                    setCategoryDialog({
+                      open: true,
+                      type: "edit",
+                      category: category,
+                    })
+                  }
+                >
+                  <PencilIcon />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() =>
+                    setDeleteDialog({
+                      open: true,
+                      type: "category",
+                      id: { catId: category.id, taskId: null },
+                    })
+                  }
+                >
+                  <Trash2Icon />
+                </Button>
+              </CardHeader>
+              <CollapsibleContent>
+                <Separator />
+                <CardContent
+                  className={cn(
+                    "min-w-0 max-w-full p-0",
+                    !category.tasks && "p-5",
+                  )}
+                >
+                  {!category.tasks ? (
+                    <TaskNotFound className="border-2 border-dashed rounded-2xl bg-muted/20" />
+                  ) : (
+                    category.tasks?.map((task) => (
+                      <TaskCard
+                        task={task}
+                        onToggle={() => onToggleTask(category.id, task.id)}
+                        onEdit={() =>
+                          setTaskDialog({
+                            open: true,
+                            category: category,
+                            task: task,
+                            type: "edit",
+                          })
                         }
-                        aria-label={`Mark ${task.name} complete`}
-                        className="mt-1"
+                        onDelete={() => {
+                          setDeleteDialog({
+                            open: true,
+                            type: "task",
+                            id: { catId: category.id, taskId: task.id },
+                          });
+                        }}
                       />
-                      <div className="min-w-0 max-w-full flex-1 overflow-hidden">
-                        <p
-                          className={`max-w-full whitespace-normal wrap-anywhere break-normal text-sm font-medium ${task.completed ? "text-muted-foreground line-through" : ""}`}
-                        >
-                          {task.name}
-                        </p>
-                        <p className="mt-1 max-w-full whitespace-normal wrap-anywhere break-normal text-xs leading-5 text-muted-foreground">
-                          {task.description || "No description"}
-                        </p>
-                        {task.dueDate ? (
-                          <p className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
-                            <CalendarDaysIcon className="size-3.5" />{" "}
-                            {task.dueDate}
-                          </p>
-                        ) : null}
-                      </div>
-                      <div className="flex shrink-0 gap-1 self-end sm:self-start">
-                        <Button
-                          variant="ghost"
-                          size="icon-sm"
-                          aria-label={`Edit ${task.name}`}
-                          onClick={() =>
-                            setTaskDialog({
-                              open: true,
-                              category: category,
-                              task: task,
-                              type: "edit",
-                            })
-                          }
-                        >
-                          <PencilIcon />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon-sm"
-                          aria-label={`Delete ${task.name}`}
-                          onClick={() => {
-                            setDeleteDialog({
-                              open: true,
-                              type: "task",
-                              id: { catId: category.id, taskId: task.id },
-                            });
-                          }}
-                        >
-                          <Trash2Icon />
-                        </Button>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </CardContent>
-            </CollapsibleContent>
-          </Card>
-        </Collapsible>
-      ))}
+                    ))
+                  )}
+                </CardContent>
+              </CollapsibleContent>
+            </Card>
+          </Collapsible>
+        ))
+      ) : (
+        <TaskCategoryNotFound className="h-full" />
+      )}
 
       {deleteDialog.open && (
         <DeleteDialog

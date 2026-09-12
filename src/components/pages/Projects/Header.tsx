@@ -64,26 +64,33 @@ type ProgressFilter = "any" | "not-started" | "in-progress" | "done";
 type DueDateFileter = "any" | "week" | "month" | "overdue";
 type SortFilter = "updated" | "name" | "due-date" | "progress";
 
-const filterItems = {
-  status: ["Active", "Completed", "On Hold"] as IProject["status"][],
+type FilterItemsType = {
+  status: IProject["status"][];
+  progress: { label: string; value: ProgressFilter }[];
+  dueDate: { label: string; value: DueDateFileter }[];
+  sort: { label: string; value: SortFilter }[];
+};
+
+const filterItems: FilterItemsType = {
+  status: ["Active", "Completed", "On Hold"],
   progress: [
-    { lable: "Any progress", value: "any" },
-    { lable: "Not started", value: "not-started" },
-    { lable: "In progress", value: "in-progress" },
-    { lable: "All Done", value: "done" },
-  ] satisfies { lable: string; value: ProgressFilter }[],
+    { label: "Any progress", value: "any" },
+    { label: "Not started", value: "not-started" },
+    { label: "In progress", value: "in-progress" },
+    { label: "All Done", value: "done" },
+  ],
   dueDate: [
-    { lable: "Any date", value: "any" },
-    { lable: "Next 7 days", value: "week" },
-    { lable: "Next 30 days", value: "month" },
-    { lable: "Overdue", value: "overdue" },
-  ] satisfies { lable: string; value: DueDateFileter }[],
+    { label: "Any date", value: "any" },
+    { label: "Next 7 days", value: "week" },
+    { label: "Next 30 days", value: "month" },
+    { label: "Overdue", value: "overdue" },
+  ],
   sort: [
-    { lable: "Recently updated", value: "updated" },
-    { lable: "Project name", value: "name" },
-    { lable: "Due date", value: "due-date" },
-    { lable: "Progress", value: "progress" },
-  ] satisfies { lable: string; value: SortFilter }[],
+    { label: "Recently updated", value: "updated" },
+    { label: "Project name", value: "name" },
+    { label: "Due date", value: "due-date" },
+    { label: "Progress", value: "progress" },
+  ],
 };
 
 function filterByProgress(projects: IProject[], type: ProgressFilter) {
@@ -316,6 +323,7 @@ export default function Header({
                       Progress
                     </p>
                     <Select
+                      items={filterItems.progress}
                       value={filters.progress}
                       onValueChange={(value) =>
                         setFilters((prev) => ({
@@ -329,7 +337,7 @@ export default function Header({
                       </SelectTrigger>
                       <SelectContent>
                         {filterItems.progress.map((i) => (
-                          <SelectItem value={i.value}>{i.lable}</SelectItem>
+                          <SelectItem value={i.value}>{i.label}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
@@ -337,6 +345,7 @@ export default function Header({
                   <div className="grid gap-2 grid-cols-2">
                     {/* Due Date Filter */}
                     <Select
+                      items={filterItems.dueDate}
                       value={filters.dueDate}
                       onValueChange={(value) =>
                         setFilters((prev) => ({
@@ -353,12 +362,13 @@ export default function Header({
                       </SelectTrigger>
                       <SelectContent>
                         {filterItems.dueDate.map((i) => (
-                          <SelectItem value={i.value}>{i.lable}</SelectItem>
+                          <SelectItem value={i.value}>{i.label}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                     {/* Sort Filter */}
                     <Select
+                      items={filterItems.sort}
                       value={filters.sort}
                       onValueChange={(value) =>
                         setFilters((prev) => ({
@@ -375,7 +385,7 @@ export default function Header({
                       </SelectTrigger>
                       <SelectContent>
                         {filterItems.sort.map((i) => (
-                          <SelectItem value={i.value}>{i.lable}</SelectItem>
+                          <SelectItem value={i.value}>{i.label}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>

@@ -44,7 +44,7 @@ export default function TaskCategoryDialog({
           <Label htmlFor="category-name">Category name</Label>
           <Input
             id="category-name"
-            defaultValue={draft.name}
+            value={draft.name}
             onChange={(event) =>
               setDraft({ ...draft, name: event.target.value })
             }

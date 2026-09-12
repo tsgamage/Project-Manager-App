@@ -1,8 +1,11 @@
+export type TTaskPriority = "Low" | "Medium" | "High";
+
 export interface ITask {
   id: string;
   name: string;
   description?: string;
   dueDate?: string;
+  priority?: TTaskPriority;
   completed: boolean;
 }
 

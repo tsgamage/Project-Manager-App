@@ -1,4 +1,4 @@
-import type { IProject } from "@/types/project.types";
+import type { IProject, ITask, TTaskPriority } from "@/types/project.types";
 
 export { cn } from "cn";
 
@@ -42,4 +42,27 @@ export function formatDate(date: string) {
     day: "numeric",
     year: "numeric",
   }).format(new Date(`${date}T00:00:00`));
+}
+
+export type TTaskStatus = "Completed" | "Missed" | "Today" | "Upcoming" | "No due date";
+
+export function getTaskPriority(task: ITask): TTaskPriority {
+  return task.priority ?? "Medium";
+}
+
+export function getTaskStatus(task: ITask, today = new Date()): TTaskStatus {
+  if (task.completed) return "Completed";
+  if (!task.dueDate) return "No due date";
+
+  const dueDate = new Date(`${task.dueDate}T00:00:00`);
+  const currentDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const normalizedDueDate = new Date(
+    dueDate.getFullYear(),
+    dueDate.getMonth(),
+    dueDate.getDate(),
+  );
+
+  if (normalizedDueDate < currentDate) return "Missed";
+  if (normalizedDueDate.getTime() === currentDate.getTime()) return "Today";
+  return "Upcoming";
 }
