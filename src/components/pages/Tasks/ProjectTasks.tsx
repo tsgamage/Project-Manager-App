@@ -139,14 +139,16 @@ export default function ProjectTasks({
                 {taskCount} {taskCount === 1 ? "task" : "tasks"}
               </span>
               <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    aria-label={`More actions for ${project.name}`}
-                  >
-                    <MoreHorizontalIcon />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label={`More actions for ${project.name}`}
+                    />
+                  }
+                >
+                  <MoreHorizontalIcon />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuSub>

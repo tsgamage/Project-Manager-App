@@ -183,6 +183,7 @@ export default function Tasks({
                   ) : (
                     category.tasks?.map((task) => (
                       <TaskCard
+                        key={task.id}
                         task={task}
                         onToggle={() => onToggleTask(category.id, task.id)}
                         onEdit={() =>
