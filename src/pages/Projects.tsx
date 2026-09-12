@@ -2,11 +2,12 @@ import { useMemo, useState } from "react";
 import PageWrapper from "@/components/Page-Wrapper";
 import ProjectCard from "@/components/pages/Projects/Card";
 import Header from "@/components/pages/Projects/Header";
-import { Button } from "@/components/ui/shadcn/button";
 import type { IProject } from "@/types/project.types";
 import { useProjectStore } from "@/store/project.store";
 import type { ProjectCreateData } from "@/components/Dialogs/ProjectDialog";
 import ProjectDialog from "@/components/Dialogs/ProjectDialog";
+import { ProjectPagination } from "@/components/ui/project-pagination";
+import { Separator } from "@/components/ui/shadcn/separator";
 
 export type ProjectViewType = "card" | "list";
 
@@ -113,18 +114,21 @@ export default function ProjectPage() {
               />
             ))}
           </section>
-          <footer className="flex items-center justify-between border-t pt-4 text-xs text-muted-foreground">
-            <span>
-              Showing {visibleProjects.length} of {filteredProjects.length}{" "}
-              projects
-            </span>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" disabled>
-                Previous
-              </Button>
-              <Button variant="outline" size="sm">
-                Next
-              </Button>
+          <footer className="text-xs text-muted-foreground">
+            <Separator />
+            <div className="flex items-center justify-between mt-5">
+              <span>
+                Showing {visibleProjects.length} of {filteredProjects.length}{" "}
+                projects
+              </span>
+              <ProjectPagination
+                itemCount={10}
+                onItemCountChange={() => {}}
+                onPreviousClick={() => {}}
+                onNextClick={() => {}}
+                onFirstClick={() => {}}
+                onLastClick={() => {}}
+              />
             </div>
           </footer>
         </div>

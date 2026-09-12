@@ -24,6 +24,7 @@ export interface IProject {
   description: string;
   dueDate: string;
   taskCategories?: ITaskCategory[];
+  pinned?: boolean;
   createdAt: number;
   updatedAt: number;
   deletedAt?: number;

@@ -1,31 +1,16 @@
+import NotFoundForFilters from "@/components/Not Found/not-found-for-filters";
+import ProjectsNotFound from "@/components/Not Found/projects-not-found";
 import PageWrapper from "@/components/Page-Wrapper";
+import type { TaskSort } from "@/components/pages/Tasks/filter-popover";
 import ProjectTasks from "@/components/pages/Tasks/ProjectTasks";
-import TaskToolbar, {
-  type TaskSort,
-} from "@/components/pages/Tasks/TaskToolbar";
-import { Button } from "@/components/ui/shadcn/button";
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/shadcn/empty";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/shadcn/pagination";
+import TaskToolbar from "@/components/pages/Tasks/TaskToolbar";
+import { ProjectPagination } from "@/components/ui/project-pagination";
+import { Separator } from "@/components/ui/shadcn/separator";
 import { getTaskPriority, getTaskStatus } from "@/lib/utils";
 import { useProjectStore } from "@/store/project.store";
 import type { IProject, ITask, ITaskCategory } from "@/types/project.types";
-import { ListTodoIcon } from "lucide-react";
 import { useState } from "react";
 
-const PAGE_SIZE = 8;
 type TaskRecord = {
   project: IProject;
   category: ITaskCategory;
@@ -47,6 +32,8 @@ function getAllTaskRecords(projects: IProject[]): TaskRecord[] {
 }
 
 export default function TasksPage() {
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
   const projects = useProjectStore((state) => state.projects).filter(
     (project) => project.status !== "Archived",
   );
@@ -115,11 +102,12 @@ export default function TasksPage() {
       leftDate - rightDate || left.task.name.localeCompare(right.task.name)
     );
   });
-  const pageCount = Math.max(1, Math.ceil(sortedRecords.length / PAGE_SIZE));
+
+  const pageCount = Math.max(1, Math.ceil(sortedRecords.length / itemsPerPage));
   const safePage = Math.min(page, pageCount);
   const pageRecords = sortedRecords.slice(
-    (safePage - 1) * PAGE_SIZE,
-    safePage * PAGE_SIZE,
+    (safePage - 1) * itemsPerPage,
+    safePage * itemsPerPage,
   );
   const pageKeys = new Set(pageRecords.map((record) => record.key));
   const hasActiveFilters =
@@ -128,7 +116,7 @@ export default function TasksPage() {
     statusFilter !== "all" ||
     priorityFilter !== "all";
   const showAllCategories =
-    !hasActiveFilters && sortedRecords.length <= PAGE_SIZE;
+    !hasActiveFilters && sortedRecords.length <= itemsPerPage;
   const visibleProjects = projects
     .map((project) => ({
       project,
@@ -198,35 +186,10 @@ export default function TasksPage() {
           onCollapseAll={collapseAll}
           onExpandAll={expandAll}
         />
-        {projects.length === 0 && (
-          <Empty className="min-h-72">
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <ListTodoIcon />
-              </EmptyMedia>
-              <EmptyTitle>No active projects</EmptyTitle>
-              <EmptyDescription>
-                Create a project before adding tasks.
-              </EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        )}
+        {projects.length === 0 && <ProjectsNotFound />}
 
         {visibleProjects.length === 0 && projects.length > 0 && (
-          <Empty className="min-h-72">
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <ListTodoIcon />
-              </EmptyMedia>
-              <EmptyTitle>No matching tasks</EmptyTitle>
-              <EmptyDescription>
-                Try changing your search or filters.
-              </EmptyDescription>
-            </EmptyHeader>
-            <Button variant="outline" onClick={resetFilters}>
-              Reset filters
-            </Button>
-          </Empty>
+          <NotFoundForFilters onResetFilters={resetFilters} type="tasks" />
         )}
 
         {visibleProjects.length > 0 && (
@@ -277,45 +240,38 @@ export default function TasksPage() {
             ))}
           </section>
         )}
-        {sortedRecords.length > PAGE_SIZE && (
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  href="#"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    setPage((current) => Math.max(1, current - 1));
-                  }}
-                />
-              </PaginationItem>
-              {Array.from({ length: pageCount }, (_, index) => index + 1).map(
-                (pageNumber) => (
-                  <PaginationItem key={pageNumber}>
-                    <PaginationLink
-                      href="#"
-                      isActive={pageNumber === safePage}
-                      onClick={(event) => {
-                        event.preventDefault();
-                        setPage(pageNumber);
-                      }}
-                    >
-                      {pageNumber}
-                    </PaginationLink>
-                  </PaginationItem>
-                ),
-              )}
-              <PaginationItem>
-                <PaginationNext
-                  href="#"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    setPage((current) => Math.min(pageCount, current + 1));
-                  }}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+
+        {sortedRecords.length > itemsPerPage && (
+          <footer className="text-xs ">
+            <Separator />
+            <div className="flex items-center justify-between mt-5">
+              <span>
+                Showing{" "}
+                {page * itemsPerPage < projects.length
+                  ? page * itemsPerPage
+                  : projects.length}{" "}
+                of {projects.length} items
+              </span>
+              <ProjectPagination
+                disable={{
+                  first: page === 1,
+                  prev: page === 1,
+                  next: page === pageCount,
+                  last: page === pageCount,
+                }}
+                itemCount={itemsPerPage}
+                onItemCountChange={setItemsPerPage}
+                onPreviousClick={() =>
+                  setPage((current) => Math.max(1, current - 1))
+                }
+                onNextClick={() =>
+                  setPage((current) => Math.min(pageCount, current + 1))
+                }
+                onFirstClick={() => setPage(1)}
+                onLastClick={() => setPage(pageCount)}
+              />
+            </div>
+          </footer>
         )}
       </div>
     </PageWrapper>

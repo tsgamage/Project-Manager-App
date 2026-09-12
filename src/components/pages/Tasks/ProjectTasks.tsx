@@ -97,15 +97,18 @@ export default function ProjectTasks({
       (total, category) => total + (category.tasks?.length ?? 0),
       0,
     ) ?? 0;
+
   const [categoryDialog, setCategoryDialog] = useState<{
     open: boolean;
     category?: ITaskCategory;
   }>({ open: false });
+
   const [taskDialog, setTaskDialog] = useState<{
     open: boolean;
     category?: ITaskCategory;
     task?: ITask;
   }>({ open: false });
+
   const [deleteDialog, setDeleteDialog] = useState<{
     open: boolean;
     categoryId?: string;
